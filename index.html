@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-title" content="C10 Log">
+<title>C10 Ladelog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --fg:#000000; --mute:#707070; --line:#e6e6e6; --soft:#f3f3f3; --bar2:#c4c4c4;
+  --font:"Schibsted Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --fg:#ffffff; --mute:#8f8f8f; --line:#232323; --soft:#121212; --bar2:#4a4a4a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{--bg:#000000; --fg:#ffffff; --mute:#8f8f8f; --line:#232323; --soft:#121212; --bar2:#4a4a4a; color-scheme:dark;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px); background:var(--bg)}
+body{margin:0; background:var(--bg); color:var(--fg); font-family:var(--font); font-size:16px; line-height:1.45;
+  -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;}
+button,input,select{font:inherit; color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--fg); outline-offset:2px}
+
+.wrap{max-width:520px; margin:0 auto; padding:20px 22px 140px}
+
+header{display:flex; justify-content:space-between; align-items:center; height:44px}
+.brand{font-weight:700; font-size:17px; letter-spacing:-0.01em}
+.brand span{color:var(--mute); font-weight:500}
+.icon-btn{width:40px; height:40px; border:0; background:transparent; display:grid; place-items:center; border-radius:50%; margin-right:-8px}
+.icon-btn svg{width:22px; height:22px}
+
+.periods{display:flex; gap:4px; margin:28px 0 0; padding:3px; background:var(--soft); border-radius:999px; width:max-content}
+.periods button{border:0; background:transparent; padding:6px 14px; border-radius:999px; font-size:14px; color:var(--mute)}
+.periods button[aria-pressed="true"]{background:var(--fg); color:var(--bg)}
+
+.hero{margin:34px 0 8px}
+.hero-num{font-size:clamp(84px, 30vw, 148px); font-weight:600; letter-spacing:-0.055em; line-height:.86; margin-left:-0.04em}
+.hero-num.empty{color:var(--line)}
+.hero-cap{margin-top:14px; color:var(--mute); font-size:15px}
+.hero-cap b{color:var(--fg); font-weight:500}
+
+.stats{display:grid; grid-template-columns:repeat(3,1fr); margin:34px 0 0; border-top:1px solid var(--fg)}
+.stat{padding:14px 0 0}
+.stat + .stat{padding-left:14px; border-left:1px solid var(--line)}
+.stat-v{font-size:24px; font-weight:600; letter-spacing:-0.02em}
+.stat-l{font-size:13px; color:var(--mute); line-height:1.3; margin-top:2px}
+
+section{margin-top:52px}
+h2{font-size:15px; font-weight:600; margin:0 0 16px; display:flex; justify-content:space-between; align-items:baseline}
+h2 small{font-weight:400; color:var(--mute); font-size:13px}
+
+.chart svg{display:block; width:100%; height:auto}
+.legend{display:flex; gap:18px; font-size:13px; color:var(--mute); margin-top:12px}
+.legend i{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:6px; vertical-align:0}
+
+.compare{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.cmp{background:var(--soft); border-radius:14px; padding:16px}
+.cmp-v{font-size:22px; font-weight:600; letter-spacing:-0.02em}
+.cmp-l{font-size:13px; color:var(--mute)}
+
+.list{list-style:none; margin:0; padding:0; border-top:1px solid var(--line)}
+.row{display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line);
+  width:100%; background:none; border-left:0; border-right:0; border-top:0; text-align:left}
+.date{width:44px; text-align:center; line-height:1.05}
+.date b{display:block; font-size:21px; font-weight:600; letter-spacing:-0.02em}
+.date span{font-size:12px; color:var(--mute)}
+.row-main{min-width:0}
+.row-t{font-weight:500}
+.row-s{font-size:13px; color:var(--mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.row-c{font-weight:600; text-align:right}
+.row-c small{display:block; font-weight:400; font-size:12px; color:var(--mute)}
+.empty-state{padding:36px 0; color:var(--mute); border-bottom:1px solid var(--line)}
+.empty-state b{color:var(--fg); font-weight:600; display:block; margin-bottom:4px}
+.note{font-size:13px; color:var(--mute); margin-top:14px}
+
+.banner{margin-top:24px; padding:14px 16px; border:1px solid var(--fg); border-radius:14px; font-size:14px; display:flex; gap:12px; align-items:center; justify-content:space-between}
+.banner button{border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:7px 14px; font-size:14px; white-space:nowrap}
+
+.fab{position:fixed; left:50%; transform:translateX(-50%); bottom:0; margin-bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:16px 26px; font-weight:600; font-size:16px;
+  display:flex; gap:10px; align-items:center; box-shadow:0 0 0 6px var(--bg)}
+.fab svg{width:18px; height:18px}
+
+/* Sheet */
+dialog{border:0; padding:0; margin:auto auto 0; width:100%; max-width:560px; max-height:92vh; max-height:92dvh; background:var(--bg); color:var(--fg);
+  border-radius:22px 22px 0 0; overflow:auto}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(40px); opacity:0}to{transform:none; opacity:1}}
+@media (prefers-reduced-motion: reduce){dialog[open]{animation:none}}
+.sheet{padding:22px 22px calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet-h{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px}
+.sheet-h h3{margin:0; font-size:22px; font-weight:600; letter-spacing:-0.02em}
+.close{border:0; background:var(--soft); border-radius:999px; padding:7px 14px; font-size:14px}
+
+.seg{display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:3px; background:var(--soft); border-radius:12px; margin-bottom:18px}
+.seg button{border:0; background:transparent; padding:9px 0; border-radius:9px; font-size:15px; color:var(--mute)}
+.seg button[aria-pressed="true"]{background:var(--fg); color:var(--bg)}
+
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.field{display:block}
+.field.full{grid-column:1/-1}
+.field span{display:block; font-size:13px; color:var(--mute); margin-bottom:6px}
+.field input{width:100%; border:1px solid var(--line); background:var(--bg); border-radius:12px; padding:13px 14px; font-size:17px; appearance:none; -webkit-appearance:none; min-height:50px}
+.field input:focus{border-color:var(--fg); outline:none}
+.field input::placeholder{color:var(--mute); opacity:.7}
+.field.bad input{border-color:var(--fg); border-width:2px}
+.hint{font-size:12px; color:var(--mute); margin-top:5px}
+
+.soc{display:grid; grid-template-columns:1fr auto 1fr; align-items:end; gap:10px}
+.soc .arrow{padding-bottom:14px; color:var(--mute)}
+
+.preview{margin:20px 0 0; padding:16px 0 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:baseline}
+.preview-l{font-size:14px; color:var(--mute)}
+.preview-v{font-size:26px; font-weight:600; letter-spacing:-0.02em}
+.err{font-size:14px; margin-top:10px; min-height:1em}
+.primary{width:100%; margin-top:14px; border:0; background:var(--fg); color:var(--bg); border-radius:14px; padding:17px; font-size:17px; font-weight:600}
+.danger{width:100%; margin-top:8px; border:0; background:transparent; color:var(--mute); padding:12px; font-size:15px; text-decoration:underline; text-underline-offset:3px}
+.link{border:1px solid var(--line); background:transparent; border-radius:12px; padding:13px; width:100%; font-size:15px; margin-top:12px}
+.hidden{display:none !important}
+.store-note{font-size:12px; color:var(--mute); margin-top:18px; text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">C10 <span>Ladelog</span></div>
+    <button class="icon-btn" id="btnSettings" aria-label="Einstellungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+    </button>
+  </header>
+
+
+  <div class="periods" role="group" aria-label="Zeitraum">
+    <button data-p="all" aria-pressed="true">Gesamt</button>
+    <button data-p="12m" aria-pressed="false">12 Monate</button>
+    <button data-p="30d" aria-pressed="false">30 Tage</button>
+  </div>
+
+  <div class="hero">
+    <div class="hero-num" id="heroNum">–</div>
+    <div class="hero-cap" id="heroCap">Euro pro 100 km</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-v" id="sPaid">–</div><div class="stat-l">kWh/100 km bezahlt</div></div>
+    <div class="stat"><div class="stat-v" id="sBatt">–</div><div class="stat-l">kWh/100 km aus dem Akku</div></div>
+    <div class="stat"><div class="stat-v" id="sCost">–</div><div class="stat-l">Kosten gesamt</div></div>
+  </div>
+
+  <section>
+    <h2>Kosten pro Monat <small id="chartSum"></small></h2>
+    <div class="chart" id="chart"></div>
+    <div class="legend"><span><i style="background:var(--fg)"></i>Zuhause</span><span><i style="background:var(--bar2)"></i>Unterwegs</span></div>
+  </section>
+
+  <section>
+    <h2>Preis pro kWh</h2>
+    <div class="compare">
+      <div class="cmp"><div class="cmp-v" id="pHome">–</div><div class="cmp-l">Zuhause</div></div>
+      <div class="cmp"><div class="cmp-v" id="pAway">–</div><div class="cmp-l">Unterwegs</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ladungen <small id="count"></small></h2>
+    <ul class="list" id="list"></ul>
+    <p class="note" id="listNote"></p>
+  </section>
+</div>
+
+<button class="fab" id="btnAdd">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  Ladung erfassen
+</button>
+
+<!-- Ladung -->
+<dialog id="dlgCharge" aria-labelledby="chargeTitle">
+  <form class="sheet" id="formCharge" method="dialog" novalidate>
+    <div class="sheet-h"><h3 id="chargeTitle">Neue Ladung</h3><button type="button" class="close" data-close>Schließen</button></div>
+
+    <div class="seg" role="group" aria-label="Ladeart" id="typeSeg">
+      <button type="button" data-t="home" aria-pressed="true">Zuhause</button>
+      <button type="button" data-t="ac" aria-pressed="false">AC</button>
+      <button type="button" data-t="dc" aria-pressed="false">DC</button>
+    </div>
+
+    <div class="grid">
+      <label class="field full"><span>Zeitpunkt</span><input type="datetime-local" id="fTs" required></label>
+      <label class="field full"><span>Kilometerstand</span><input id="fOdo" inputmode="numeric" placeholder="z. B. 12480" autocomplete="off">
+        <div class="hint" id="odoHint"></div></label>
+      <div class="field full soc">
+        <label class="field"><span>Akku vorher %</span><input id="fS0" inputmode="numeric" placeholder="20" autocomplete="off"></label>
+        <span class="arrow">→</span>
+        <label class="field"><span>Akku nachher %</span><input id="fS1" inputmode="numeric" placeholder="80" autocomplete="off"></label>
+      </div>
+      <label class="field"><span>Geladene kWh</span><input id="fKwh" inputmode="decimal" placeholder="von Säule" autocomplete="off"></label>
+      <label class="field"><span>Preis pro kWh</span><input id="fPrice" inputmode="decimal" placeholder="0,35 €" autocomplete="off"></label>
+      <label class="field full"><span>Gesamtbetrag (optional)</span><input id="fTotal" inputmode="decimal" placeholder="Nur bei Start- oder Blockiergebühren" autocomplete="off">
+        <div class="hint">Ersetzt kWh × Preis, wenn ausgefüllt.</div></label>
+      <label class="field full"><span>Notiz (optional)</span><input id="fNote" placeholder="z. B. Anbieter oder Ort" autocomplete="off"></label>
+    </div>
+
+    <div class="preview"><div class="preview-l" id="pvLabel">Kosten</div><div class="preview-v" id="pvVal">–</div></div>
+    <div class="err" id="err" role="alert"></div>
+    <button type="submit" class="primary" id="btnSave">Ladung speichern</button>
+    <button type="button" class="danger hidden" id="btnDelete">Ladung löschen</button>
+  </form>
+</dialog>
+
+<!-- Einstellungen -->
+<dialog id="dlgSettings" aria-labelledby="setTitle">
+  <form class="sheet" id="formSettings" method="dialog" novalidate>
+    <div class="sheet-h"><h3 id="setTitle">Einstellungen</h3><button type="button" class="close" data-close>Schließen</button></div>
+    <div class="grid">
+      <label class="field full"><span>Nutzbare Akkukapazität (kWh)</span><input id="sCap" inputmode="decimal">
+        <div class="hint">Wird genutzt, um aus den Prozentwerten kWh zu berechnen.</div></label>
+      <label class="field"><span>Ladeverlust %</span><input id="sLoss" inputmode="decimal">
+        <div class="hint">Nur für Schätzungen ohne kWh-Angabe.</div></label>
+      <label class="field"><span>Strompreis zuhause</span><input id="sHome" inputmode="decimal">
+        <div class="hint">Wird bei „Zuhause“ vorausgefüllt.</div></label>
+    </div>
+    <button type="submit" class="primary">Einstellungen speichern</button>
+    <button type="button" class="link" id="btnExport">Sicherung exportieren (CSV)</button>
+    <button type="button" class="link" id="btnImport">Sicherung importieren</button>
+    <input type="file" id="fileImport" accept=".csv,text/csv" class="hidden">
+    <p class="store-note" id="storeNote"></p>
+  </form>
+</dialog>
+
+<script>
+(() => {
+  const LS_KEY = "c10-ladelog-v1";
+  const LS_SET = "c10-ladelog-settings-v1";
+  const TYPE_LABEL = { home: "Zuhause", ac: "AC unterwegs", dc: "DC Schnellladen" };
+  const $ = (id) => document.getElementById(id);
+
+  const state = {
+    charges: [],
+    settings: { cap: 69, loss: 10, homePrice: 0.35 },
+    period: "all",
+    mode: "local",
+    editingId: null,
+    type: "home",
+  };
+
+  // ---------- Formatierung ----------
+  const nf = (d) => new Intl.NumberFormat("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const f0 = nf(0), f1 = nf(1), f2 = nf(2);
+  const eur = (v) => v == null || !isFinite(v) ? "–" : f2.format(v) + " €";
+  const parseNum = (v) => {
+    if (v == null) return null;
+    const s = String(v).trim().replace(/\s/g, "").replace(",", ".");
+    if (s === "") return null;
+    const n = Number(s);
+    return isFinite(n) ? n : NaN;
+  };
+  const nowLocal = () => {
+    const d = new Date();
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  };
+  const MONTHS = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+
+  // ---------- Speicher ----------
+  const local = {
+    load() { try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch { return []; } },
+    save(list) { try { localStorage.setItem(LS_KEY, JSON.stringify(list)); } catch {} },
+    loadSet() { try { return JSON.parse(localStorage.getItem(LS_SET) || "null"); } catch { return null; } },
+    saveSet(s) { try { localStorage.setItem(LS_SET, JSON.stringify(s)); } catch {} },
+  };
+  const remote = null;
+
+  async function putCharge(c) {
+    if (remote) {
+      const { id, ...body } = c;
+      await remote.col.doc(id).set(body);
+    } else {
+      const list = local.load().filter((x) => x.id !== c.id);
+      list.push(c); local.save(list); state.charges = list; render();
+    }
+  }
+  async function deleteCharge(id) {
+    if (remote) await remote.col.doc(id).delete();
+    else { const list = local.load().filter((x) => x.id !== id); local.save(list); state.charges = list; render(); }
+  }
+  async function saveSettings(s) {
+    state.settings = s;
+    if (remote) await remote.setDoc.set(s); else local.saveSet(s);
+    render();
+  }
+  const newId = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+
+  // ---------- Berechnung ----------
+  function derive(c, s) {
+    const added = Math.max(0, c.soc1 - c.soc0) / 100 * s.cap;
+    const estimated = c.kwh == null;
+    const paid = estimated ? added * (1 + s.loss / 100) : c.kwh;
+    const cost = c.total != null ? c.total : (c.price != null ? paid * c.price : null);
+    return { added, paid, cost, estimated };
+  }
+  const sortAsc = (a, b) => (a.ts < b.ts ? -1 : a.ts > b.ts ? 1 : a.odo - b.odo);
+
+  function compute() {
+    const s = state.settings;
+    const all = [...state.charges].sort(sortAsc);
+    const now = Date.now();
+    const from = state.period === "30d" ? now - 30 * 864e5 : state.period === "12m" ? now - 365 * 864e5 : -Infinity;
+    const inP = (c) => new Date(c.ts).getTime() >= from;
+
+    let km = 0, used = 0, added = 0, paidAll = 0, cost = 0, paidCosted = 0;
+    const byType = { home: { c: 0, k: 0 }, away: { c: 0, k: 0 } };
+    const rows = [];
+
+    all.forEach((c, i) => {
+      const d = derive(c, s);
+      let seg = null;
+      if (i > 0) {
+        const p = all[i - 1];
+        const dk = c.odo - p.odo;
+        const du = (p.soc1 - c.soc0) / 100 * s.cap;
+        if (dk > 0 && du > 0) seg = { km: dk, used: du, cons: du / dk * 100 };
+      }
+      rows.push({ c, d, seg });
+      if (!inP(c)) return;
+      if (seg) { km += seg.km; used += seg.used; }
+      if (d.added > 0) { added += d.added; paidAll += d.paid; }
+      if (d.cost != null) {
+        cost += d.cost; paidCosted += d.paid;
+        const g = c.type === "home" ? byType.home : byType.away;
+        g.c += d.cost; g.k += d.paid;
+      }
+    });
+
+    const battCons = km > 0 ? used / km * 100 : null;
+    const factor = added > 0 ? paidAll / added : 1 + s.loss / 100;
+    const paidCons = battCons != null ? battCons * factor : null;
+    const avgPrice = paidCosted > 0 ? cost / paidCosted : null;
+    const per100 = paidCons != null && avgPrice != null ? paidCons * avgPrice : null;
+    return {
+      rows, km, battCons, paidCons, per100, cost,
+      nInPeriod: all.filter(inP).length,
+      pHome: byType.home.k > 0 ? byType.home.c / byType.home.k : null,
+      pAway: byType.away.k > 0 ? byType.away.c / byType.away.k : null,
+    };
+  }
+
+  // ---------- Darstellung ----------
+  function render() {
+    const r = compute();
+    const hero = $("heroNum");
+    if (r.per100 != null) { hero.textContent = f2.format(r.per100); hero.classList.remove("empty"); }
+    else { hero.textContent = "0,00"; hero.classList.add("empty"); }
+    $("heroCap").innerHTML = r.per100 != null
+      ? `Euro pro 100 km, über <b>${f0.format(r.km)} km</b>`
+      : state.charges.length < 2 ? "Euro pro 100 km. Ab der zweiten Ladung wird gerechnet." : "Euro pro 100 km. Noch keine auswertbare Strecke in diesem Zeitraum.";
+
+    $("sPaid").textContent = r.paidCons != null ? f1.format(r.paidCons) : "–";
+    $("sBatt").textContent = r.battCons != null ? f1.format(r.battCons) : "–";
+    $("sCost").textContent = r.nInPeriod ? f0.format(r.cost) + " €" : "–";
+    $("pHome").textContent = r.pHome != null ? f2.format(r.pHome) + " €" : "–";
+    $("pAway").textContent = r.pAway != null ? f2.format(r.pAway) + " €" : "–";
+
+    renderChart();
+    renderList(r.rows);
+  }
+
+  function renderChart() {
+    const s = state.settings;
+    const now = new Date();
+    const months = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push({ key: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"), label: MONTHS[d.getMonth()], home: 0, away: 0 });
+    }
+    for (const c of state.charges) {
+      const m = months.find((x) => x.key === c.ts.slice(0, 7));
+      if (!m) continue;
+      const cost = derive(c, s).cost || 0;
+      if (c.type === "home") m.home += cost; else m.away += cost;
+    }
+    const max = Math.max(1, ...months.map((m) => m.home + m.away));
+    const W = 480, H = 170, base = 140, top = 18, bw = 44, gap = (W - bw * 6) / 5;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Kosten der letzten sechs Monate">`;
+    svg += `<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)" stroke-width="1"/>`;
+    months.forEach((m, i) => {
+      const x = i * (bw + gap);
+      const hh = (m.home / max) * (base - top), ha = (m.away / max) * (base - top);
+      const tot = m.home + m.away;
+      if (ha > 0) svg += `<rect x="${x}" y="${base - hh - ha}" width="${bw}" height="${ha}" rx="3" fill="var(--bar2)"/>`;
+      if (hh > 0) svg += `<rect x="${x}" y="${base - hh}" width="${bw}" height="${hh}" rx="3" fill="var(--fg)"/>`;
+      if (tot > 0) svg += `<text x="${x + bw / 2}" y="${base - hh - ha - 6}" text-anchor="middle" font-size="12" fill="var(--mute)" font-family="inherit">${f0.format(tot)}</text>`;
+      svg += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="13" fill="${i === 5 ? "var(--fg)" : "var(--mute)"}" font-family="inherit">${m.label}</text>`;
+    });
+    $("chart").innerHTML = svg + "</svg>";
+    const sum = months.reduce((a, m) => a + m.home + m.away, 0);
+    $("chartSum").textContent = sum > 0 ? eur(sum) + " in 6 Monaten" : "";
+  }
+
+  function renderList(rows) {
+    const list = $("list");
+    list.innerHTML = "";
+    $("count").textContent = rows.length ? rows.length : "";
+    if (!rows.length) {
+      list.innerHTML = `<li class="empty-state"><b>Noch keine Ladung erfasst.</b>Trag nach dem nächsten Laden Kilometerstand, Akkustand und Preis ein. Ab der zweiten Ladung siehst du Verbrauch und Kosten pro 100 km.</li>`;
+      $("listNote").textContent = "";
+      return;
+    }
+    const anyEst = rows.some((r) => r.d.estimated);
+    $("listNote").textContent = anyEst ? "Kursive kWh-Werte sind aus den Prozentangaben geschätzt." : "";
+    for (const { c, d, seg } of [...rows].reverse()) {
+      const dt = new Date(c.ts);
+      const li = document.createElement("li");
+      const b = document.createElement("button");
+      b.className = "row"; b.type = "button";
+      const kwhTxt = (d.estimated ? "<i>" : "") + f1.format(d.paid) + " kWh" + (d.estimated ? "</i>" : "");
+      b.innerHTML = `
+        <div class="date"><b>${dt.getDate()}</b><span>${MONTHS[dt.getMonth()]}</span></div>
+        <div class="row-main">
+          <div class="row-t"></div>
+          <div class="row-s">${f0.format(c.soc0)} → ${f0.format(c.soc1)} %, ${kwhTxt}</div>
+        </div>
+        <div class="row-c">${eur(d.cost)}<small>${seg ? f1.format(seg.cons) + " kWh/100" : ""}</small></div>`;
+      b.querySelector(".row-t").textContent = TYPE_LABEL[c.type] + (c.note ? ", " + c.note : "");
+      b.addEventListener("click", () => openCharge(c));
+      li.appendChild(b); list.appendChild(li);
+    }
+  }
+
+  // ---------- Formular ----------
+  const dlg = $("dlgCharge");
+  const F = { ts: $("fTs"), odo: $("fOdo"), s0: $("fS0"), s1: $("fS1"), kwh: $("fKwh"), price: $("fPrice"), total: $("fTotal"), note: $("fNote") };
+
+  function setType(t) {
+    state.type = t;
+    document.querySelectorAll("#typeSeg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.t === t)));
+  }
+  function lastPriceFor(t) {
+    if (t === "home") return state.settings.homePrice;
+    const same = [...state.charges].filter((c) => c.type === t && c.price != null).sort(sortAsc);
+    return same.length ? same[same.length - 1].price : null;
+  }
+  function fmtIn(v, d) { return v == null ? "" : nf(d).format(v).replace(/\./g, ""); }
+
+  function openCharge(c) {
+    state.editingId = c ? c.id : null;
+    $("chargeTitle").textContent = c ? "Ladung bearbeiten" : "Neue Ladung";
+    $("btnSave").textContent = c ? "Änderungen speichern" : "Ladung speichern";
+    $("btnDelete").classList.toggle("hidden", !c);
+    $("err").textContent = "";
+    document.querySelectorAll("#formCharge .field").forEach((f) => f.classList.remove("bad"));
+    const t = c ? c.type : (state.charges.length ? [...state.charges].sort(sortAsc).at(-1).type : "home");
+    setType(t);
+    F.ts.value = c ? c.ts : nowLocal();
+    F.odo.value = c ? String(c.odo) : "";
+    F.s0.value = c ? String(c.soc0) : "";
+    F.s1.value = c ? String(c.soc1) : "";
+    F.kwh.value = c && c.kwh != null ? fmtIn(c.kwh, 2) : "";
+    const p = c ? c.price : lastPriceFor(t);
+    F.price.value = p != null ? fmtIn(p, 2) : "";
+    F.total.value = c && c.total != null ? fmtIn(c.total, 2) : "";
+    F.note.value = c ? c.note || "" : "";
+    const last = [...state.charges].filter((x) => !c || x.id !== c.id).sort(sortAsc).at(-1);
+    $("odoHint").textContent = last ? `Zuletzt ${f0.format(last.odo)} km` : "";
+    updatePreview();
+    dlg.showModal();
+    if (!c) setTimeout(() => F.odo.focus(), 250);
+  }
+
+  function readForm() {
+    return {
+      ts: F.ts.value, odo: parseNum(F.odo.value), soc0: parseNum(F.s0.value), soc1: parseNum(F.s1.value),
+      kwh: parseNum(F.kwh.value), price: parseNum(F.price.value), total: parseNum(F.total.value),
+      note: F.note.value.trim(), type: state.type,
+    };
+  }
+
+  function updatePreview() {
+    const v = readForm();
+    const s = state.settings;
+    const okSoc = v.soc0 != null && v.soc1 != null && !isNaN(v.soc0) && !isNaN(v.soc1) && v.soc1 > v.soc0;
+    let kwh = v.kwh != null && !isNaN(v.kwh) ? v.kwh : null, est = false;
+    if (kwh == null && okSoc) { kwh = (v.soc1 - v.soc0) / 100 * s.cap * (1 + s.loss / 100); est = true; }
+    F.kwh.placeholder = est || (kwh == null && okSoc) ? "≈ " + f1.format(kwh) : "von Säule";
+    let cost = null;
+    if (v.total != null && !isNaN(v.total)) cost = v.total;
+    else if (kwh != null && v.price != null && !isNaN(v.price)) cost = kwh * v.price;
+    $("pvLabel").textContent = est ? `Kosten, geschätzt mit ${f1.format(kwh)} kWh` : "Kosten";
+    $("pvVal").textContent = eur(cost);
+  }
+
+  function validate(v) {
+    const bad = [];
+    const fail = (el, msg) => { bad.push([el, msg]); };
+    if (!v.ts) fail(F.ts, "Zeitpunkt fehlt.");
+    if (v.odo == null || isNaN(v.odo) || v.odo < 0) fail(F.odo, "Kilometerstand fehlt.");
+    if (v.soc0 == null || isNaN(v.soc0) || v.soc0 < 0 || v.soc0 > 100) fail(F.s0, "Akku vorher muss zwischen 0 und 100 % liegen.");
+    if (v.soc1 == null || isNaN(v.soc1) || v.soc1 < 0 || v.soc1 > 100) fail(F.s1, "Akku nachher muss zwischen 0 und 100 % liegen.");
+    else if (v.soc0 != null && v.soc1 <= v.soc0) fail(F.s1, "Akku nachher muss höher sein als vorher.");
+    if (v.kwh != null && (isNaN(v.kwh) || v.kwh <= 0)) fail(F.kwh, "Geladene kWh ist keine gültige Zahl.");
+    if (v.total != null && (isNaN(v.total) || v.total < 0)) fail(F.total, "Gesamtbetrag ist keine gültige Zahl.");
+    if ((v.price == null || isNaN(v.price)) && v.total == null) fail(F.price, "Preis pro kWh oder Gesamtbetrag angeben.");
+    if (!bad.length && v.odo != null) {
+      const others = state.charges.filter((c) => c.id !== state.editingId);
+      const earlierHigher = others.find((c) => c.ts < v.ts && c.odo > v.odo);
+      const laterLower = others.find((c) => c.ts > v.ts && c.odo < v.odo);
+      if (earlierHigher) fail(F.odo, `Eine frühere Ladung hat schon ${f0.format(earlierHigher.odo)} km.`);
+      else if (laterLower) fail(F.odo, `Eine spätere Ladung hat erst ${f0.format(laterLower.odo)} km.`);
+    }
+    document.querySelectorAll("#formCharge .field").forEach((f) => f.classList.remove("bad"));
+    bad.forEach(([el]) => el.closest(".field").classList.add("bad"));
+    $("err").textContent = bad.length ? bad[0][1] : "";
+    if (bad.length) bad[0][0].focus();
+    return !bad.length;
+  }
+
+  $("formCharge").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const v = readForm();
+    if (!validate(v)) return;
+    const c = {
+      id: state.editingId || newId(), ts: v.ts, odo: v.odo, soc0: v.soc0, soc1: v.soc1,
+      kwh: v.kwh, price: v.price != null && !isNaN(v.price) ? v.price : null, total: v.total, type: v.type, note: v.note,
+    };
+    const btn = $("btnSave"); btn.disabled = true;
+    try { await putCharge(c); dlg.close(); }
+    catch (err) { $("err").textContent = err && err.code === "quota_exceeded" ? "Speicher voll. Lösche alte Ladungen, um neue anzulegen." : "Speichern hat nicht geklappt. Versuch es gleich noch einmal."; }
+    finally { btn.disabled = false; }
+  });
+
+  $("btnDelete").addEventListener("click", async () => {
+    if (!state.editingId || !confirm("Diese Ladung endgültig löschen?")) return;
+    try { await deleteCharge(state.editingId); dlg.close(); }
+    catch { $("err").textContent = "Löschen hat nicht geklappt. Versuch es gleich noch einmal."; }
+  });
+
+  Object.values(F).forEach((el) => el.addEventListener("input", updatePreview));
+  document.querySelectorAll("#typeSeg button").forEach((b) => b.addEventListener("click", () => {
+    const prevDefault = lastPriceFor(state.type);
+    const cur = parseNum(F.price.value);
+    setType(b.dataset.t);
+    if (!state.editingId && (F.price.value === "" || (prevDefault != null && cur === prevDefault))) {
+      const p = lastPriceFor(b.dataset.t);
+      F.price.value = p != null ? fmtIn(p, 2) : "";
+    }
+    updatePreview();
+  }));
+
+  // ---------- Einstellungen ----------
+  const dlgS = $("dlgSettings");
+  $("btnSettings").addEventListener("click", () => {
+    const s = state.settings;
+    $("sCap").value = fmtIn(s.cap, 1); $("sLoss").value = fmtIn(s.loss, 0); $("sHome").value = fmtIn(s.homePrice, 2);
+    $("storeNote").textContent = "Deine Daten liegen nur auf diesem Gerät. Exportiere ab und zu eine Sicherung.";
+    dlgS.showModal();
+  });
+  $("formSettings").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const cap = parseNum($("sCap").value), loss = parseNum($("sLoss").value), home = parseNum($("sHome").value);
+    const s = {
+      cap: cap > 0 ? cap : state.settings.cap,
+      loss: loss != null && loss >= 0 && loss < 50 ? loss : state.settings.loss,
+      homePrice: home != null && home >= 0 ? home : state.settings.homePrice,
+    };
+    try { await saveSettings(s); } catch {}
+    dlgS.close();
+  });
+
+  document.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", () => b.closest("dialog").close()));
+  document.querySelectorAll("dialog").forEach((d) => d.addEventListener("click", (e) => { if (e.target === d) d.close(); }));
+
+  document.querySelectorAll(".periods button").forEach((b) => b.addEventListener("click", () => {
+    state.period = b.dataset.p;
+    document.querySelectorAll(".periods button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    render();
+  }));
+  $("btnAdd").addEventListener("click", () => openCharge(null));
+
+  // ---------- Export ----------
+  function toCsv() {
+    const s = state.settings;
+    const head = ["Zeitpunkt","Ladeart","Kilometerstand","Akku vorher %","Akku nachher %","kWh","kWh geschätzt","Preis pro kWh","Kosten","Notiz"];
+    const esc = (v) => { const t = v == null ? "" : String(v); return /[;"\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+    const num = (v, d) => v == null || !isFinite(v) ? "" : v.toFixed(d).replace(".", ",");
+    const lines = [...state.charges].sort(sortAsc).map((c) => {
+      const d = derive(c, s);
+      return [c.ts.replace("T", " "), TYPE_LABEL[c.type], c.odo, c.soc0, c.soc1, num(d.paid, 2), d.estimated ? "ja" : "nein", num(c.price, 3), num(d.cost, 2), c.note].map(esc).join(";");
+    });
+    return "\uFEFF" + head.join(";") + "\n" + lines.join("\n");
+  }
+
+  // ---------- Start ----------
+  state.charges = local.load();
+  const ls = local.loadSet(); if (ls) state.settings = { ...state.settings, ...ls };
+  render();
+
+  // ---------- Sicherung ----------
+  $("btnExport").addEventListener("click", async () => {
+    const name = `c10-ladelog-${new Date().toISOString().slice(0, 10)}.csv`;
+    const blob = new Blob([toCsv()], { type: "text/csv" });
+    try {
+      const file = new File([blob], name, { type: "text/csv" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "C10 Ladelog" }); return; }
+    } catch (e) { if (e && e.name === "AbortError") return; }
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  });
+
+  $("btnImport").addEventListener("click", () => $("fileImport").click());
+  $("fileImport").addEventListener("change", async (e) => {
+    const file = e.target.files[0]; e.target.value = "";
+    if (!file) return;
+    const text = (await file.text()).replace(/^\uFEFF/, "");
+    const typeOf = (label) => (Object.entries(TYPE_LABEL).find(([, l]) => l === label) || ["home"])[0];
+    const splitRow = (line) => {
+      const out = []; let cur = "", q = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (q) { if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; } else if (ch === '"') q = false; else cur += ch; }
+        else if (ch === '"') q = true; else if (ch === ";") { out.push(cur); cur = ""; } else cur += ch;
+      }
+      out.push(cur); return out;
+    };
+    const lines = text.split(/\r?\n/).filter((l) => l.trim());
+    if (lines.length < 2 || !lines[0].startsWith("Zeitpunkt")) { alert("Die Datei ist keine C10-Ladelog-Sicherung."); return; }
+    const existing = new Set(state.charges.map((c) => c.ts + "|" + c.odo));
+    const added = [];
+    for (const line of lines.slice(1)) {
+      const [ts, type, odo, s0, s1, kwh, est, price, cost, note] = splitRow(line);
+      const c = {
+        id: newId(), ts: ts.trim().replace(" ", "T").slice(0, 16), type: typeOf(type),
+        odo: parseNum(odo), soc0: parseNum(s0), soc1: parseNum(s1),
+        kwh: est === "ja" ? null : parseNum(kwh), price: parseNum(price), total: null, note: note || "",
+      };
+      if (!c.ts || [c.odo, c.soc0, c.soc1].some((v) => v == null || isNaN(v))) continue;
+      if (c.kwh != null && isNaN(c.kwh)) c.kwh = null;
+      if (c.price != null && isNaN(c.price)) c.price = null;
+      const k = parseNum(cost);
+      if (k != null && !isNaN(k)) {
+        const calc = c.price != null ? derive(c, state.settings).paid * c.price : null;
+        if (calc == null || Math.abs(calc - k) > 0.01) c.total = k;
+      }
+      const key = c.ts + "|" + c.odo;
+      if (existing.has(key)) continue;
+      existing.add(key); added.push(c);
+    }
+    const list = local.load().concat(added);
+    local.save(list); state.charges = list; render();
+    alert(added.length ? `${added.length} Ladung${added.length === 1 ? "" : "en"} importiert.` : "Keine neuen Ladungen in der Datei gefunden.");
+  });
+
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+})();
+</script>
+</body>
+</html>
