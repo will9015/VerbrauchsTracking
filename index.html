@@ -11,8 +11,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-<meta name="apple-mobile-web-app-title" content="C10 Log">
-<title>C10 Ladelog</title>
+<meta name="apple-mobile-web-app-title" content="Ladelog">
+<title>Ladelog</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -44,6 +44,8 @@ button{cursor:pointer}
 header{display:flex; justify-content:space-between; align-items:center; height:44px}
 .brand{font-weight:700; font-size:17px; letter-spacing:-0.01em}
 .brand span{color:var(--mute); font-weight:500}
+.brand .car{color:var(--fg); font-weight:700}
+.brand .car:empty{display:none}
 .icon-btn{width:40px; height:40px; border:0; background:transparent; display:grid; place-items:center; border-radius:50%; margin-right:-8px}
 .icon-btn svg{width:22px; height:22px}
 
@@ -142,7 +144,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 <body>
 <div class="wrap">
   <header>
-    <div class="brand">C10 <span>Ladelog</span></div>
+    <div class="brand"><span class="car" id="carName"></span> <span>Ladelog</span></div>
     <button class="icon-btn" id="btnSettings" aria-label="Einstellungen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
     </button>
@@ -231,6 +233,8 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   <form class="sheet" id="formSettings" method="dialog" novalidate>
     <div class="sheet-h"><h3 id="setTitle">Einstellungen</h3><button type="button" class="close" data-close>Schließen</button></div>
     <div class="grid">
+      <label class="field full"><span>Fahrzeug</span><input id="sCar" placeholder="z. B. C10 oder Ioniq 5" autocomplete="off" maxlength="24">
+        <div class="hint">Erscheint oben in der App.</div></label>
       <label class="field full"><span>Nutzbare Akkukapazität (kWh)</span><input id="sCap" inputmode="decimal">
         <div class="hint">Wird genutzt, um aus den Prozentwerten kWh zu berechnen.</div></label>
       <label class="field"><span>Ladeverlust %</span><input id="sLoss" inputmode="decimal">
@@ -255,7 +259,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 
   const state = {
     charges: [],
-    settings: { cap: 69, loss: 10, homePrice: 0.35 },
+    settings: { car: "", cap: 69, loss: 10, homePrice: 0.35 },
     period: "all",
     mode: "local",
     editingId: null,
@@ -365,6 +369,8 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   // ---------- Darstellung ----------
   function render() {
     const r = compute();
+    $("carName").textContent = state.settings.car || "";
+    document.title = state.settings.car ? state.settings.car + " Ladelog" : "Ladelog";
     const hero = $("heroNum");
     if (r.per100 != null) { hero.textContent = f2.format(r.per100); hero.classList.remove("empty"); }
     else { hero.textContent = "0,00"; hero.classList.add("empty"); }
@@ -567,6 +573,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   const dlgS = $("dlgSettings");
   $("btnSettings").addEventListener("click", () => {
     const s = state.settings;
+    $("sCar").value = s.car || "";
     $("sCap").value = fmtIn(s.cap, 1); $("sLoss").value = fmtIn(s.loss, 0); $("sHome").value = fmtIn(s.homePrice, 2);
     $("storeNote").textContent = "Deine Daten liegen nur auf diesem Gerät. Exportiere ab und zu eine Sicherung.";
     dlgS.showModal();
@@ -575,6 +582,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     e.preventDefault();
     const cap = parseNum($("sCap").value), loss = parseNum($("sLoss").value), home = parseNum($("sHome").value);
     const s = {
+      car: $("sCar").value.trim().slice(0, 24),
       cap: cap > 0 ? cap : state.settings.cap,
       loss: loss != null && loss >= 0 && loss < 50 ? loss : state.settings.loss,
       homePrice: home != null && home >= 0 ? home : state.settings.homePrice,
@@ -613,11 +621,11 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 
   // ---------- Sicherung ----------
   $("btnExport").addEventListener("click", async () => {
-    const name = `c10-ladelog-${new Date().toISOString().slice(0, 10)}.csv`;
+    const name = `ladelog-${new Date().toISOString().slice(0, 10)}.csv`;
     const blob = new Blob([toCsv()], { type: "text/csv" });
     try {
       const file = new File([blob], name, { type: "text/csv" });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "C10 Ladelog" }); return; }
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Ladelog" }); return; }
     } catch (e) { if (e && e.name === "AbortError") return; }
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob); a.download = name;
@@ -641,7 +649,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       out.push(cur); return out;
     };
     const lines = text.split(/\r?\n/).filter((l) => l.trim());
-    if (lines.length < 2 || !lines[0].startsWith("Zeitpunkt")) { alert("Die Datei ist keine C10-Ladelog-Sicherung."); return; }
+    if (lines.length < 2 || !lines[0].startsWith("Zeitpunkt")) { alert("Die Datei ist keine Ladelog-Sicherung."); return; }
     const existing = new Set(state.charges.map((c) => c.ts + "|" + c.odo));
     const added = [];
     for (const line of lines.slice(1)) {

@@ -1,4 +1,4 @@
-# C10 Ladelog (PWA)
+# Ladelog (PWA)
 
 ## Online stellen (Vercel)
 1. Ordner in ein GitHub-Repo pushen.

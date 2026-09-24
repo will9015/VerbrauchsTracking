@@ -1,7 +1,7 @@
 {
-  "name": "C10 Ladelog",
-  "short_name": "C10 Log",
-  "description": "Ladekosten und Verbrauch für den Leapmotor C10",
+  "name": "Ladelog",
+  "short_name": "Ladelog",
+  "description": "Ladekosten und Verbrauch fürs Elektroauto",
   "lang": "de",
   "start_url": "./",
   "scope": "./",
