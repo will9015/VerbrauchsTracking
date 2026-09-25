@@ -1,4 +1,4 @@
-const CACHE = "c10-ladelog-v2";
+const CACHE = "c10-ladelog-v9";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
@@ -11,6 +11,7 @@ self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
+  if (url.origin === location.origin && url.pathname.startsWith("/api/")) return; // Preise nie aus dem Cache
   // App-Seite: erst Netz (für Updates), sonst Cache
   if (req.mode === "navigate") {
     e.respondWith(fetch(req).then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put("./index.html", copy)); return res; })

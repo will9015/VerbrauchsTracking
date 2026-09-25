@@ -73,6 +73,27 @@ h2 small{font-weight:400; color:var(--mute); font-size:13px}
 .legend{display:flex; gap:18px; font-size:13px; color:var(--mute); margin-top:12px}
 .legend i{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:6px; vertical-align:0}
 
+.save-num{font-size:clamp(44px, 14vw, 64px); font-weight:600; letter-spacing:-0.04em; line-height:1}
+.save-num.neg{color:var(--mute)}
+.save-cap{color:var(--mute); font-size:14px; margin-top:8px; max-width:40ch}
+.save-cap b{color:var(--fg); font-weight:500}
+.save-chart{margin-top:22px}
+.save-chart svg{display:block; width:100%; height:auto}
+.save-empty{background:var(--soft); border-radius:14px; padding:18px; font-size:14px; color:var(--mute)}
+.save-empty button{margin-top:12px; border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:8px 16px; font-size:14px}
+.mixbar{display:flex; height:12px; border-radius:6px; overflow:hidden; gap:2px; margin-bottom:6px}
+.mixbar i{display:block; height:100%}
+.sw-home{background:var(--fg)}
+.sw-ac{background:var(--bar2)}
+.sw-dc{background:repeating-linear-gradient(135deg, var(--fg) 0 2px, transparent 2px 5px); box-shadow:inset 0 0 0 1px var(--fg)}
+.mixrow{display:grid; grid-template-columns:14px 1fr auto; gap:12px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line)}
+.mixrow .sw{width:14px; height:14px; border-radius:3px}
+.mix-n{font-weight:500}
+.mix-s{font-size:13px; color:var(--mute)}
+.mix-p{text-align:right; font-weight:600; font-size:18px; letter-spacing:-0.01em}
+.mix-p small{display:block; font-weight:400; font-size:12px; color:var(--mute); letter-spacing:0}
+.mix-note{font-size:14px; color:var(--mute); margin-top:14px}
+.mix-note b{color:var(--fg); font-weight:500}
 .compare{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 .cmp{background:var(--soft); border-radius:14px; padding:16px}
 .cmp-v{font-size:22px; font-weight:600; letter-spacing:-0.02em}
@@ -96,9 +117,33 @@ h2 small{font-weight:400; color:var(--mute); font-size:13px}
 .banner{margin-top:24px; padding:14px 16px; border:1px solid var(--fg); border-radius:14px; font-size:14px; display:flex; gap:12px; align-items:center; justify-content:space-between}
 .banner button{border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:7px 14px; font-size:14px; white-space:nowrap}
 
+.open-card{display:flex; align-items:center; gap:14px; width:100%; margin-top:22px; padding:16px; border:1.5px solid var(--fg); border-radius:16px; background:var(--bg); text-align:left}
+.open-dot{width:10px; height:10px; border-radius:50%; background:var(--fg); flex:none; animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion: reduce){.open-dot{animation:none}}
+.open-main{flex:1; min-width:0; display:flex; flex-direction:column}
+.open-main span{font-size:13px; color:var(--mute)}
+.open-go{font-weight:600; font-size:15px}
+.secondary{width:100%; margin-top:8px; border:1px solid var(--line); background:transparent; border-radius:14px; padding:15px; font-size:16px; font-weight:500}
+.opt{color:var(--mute); font-weight:400}
+.chips{margin:-6px 0 18px}
+.chips-l{display:block; font-size:13px; color:var(--mute); margin-bottom:6px}
+.chips-row{display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none}
+.chips-row::-webkit-scrollbar{display:none}
+.chip{flex:none; border:1px solid var(--line); background:var(--bg); border-radius:999px; padding:8px 14px; font-size:14px; white-space:nowrap}
+.chip small{color:var(--mute); margin-left:6px}
+.chip[aria-pressed="true"]{background:var(--fg); color:var(--bg); border-color:var(--fg)}
+.chip[aria-pressed="true"] small{color:inherit; opacity:.7}
+.prov{display:flex; align-items:center; gap:10px; padding:12px 0; border-bottom:1px solid var(--line)}
+.prov:first-child{border-top:1px solid var(--line)}
+.prov-main{flex:1; min-width:0; background:none; border:0; text-align:left; padding:0}
+.prov-main b{display:block; font-weight:500}
+.prov-main span{font-size:13px; color:var(--mute)}
+.prov-x{border:0; background:var(--soft); border-radius:999px; padding:6px 12px; font-size:13px}
+.h4{margin:26px 0 10px; font-size:15px; font-weight:600}
 .fab{position:fixed; left:50%; transform:translateX(-50%); bottom:0; margin-bottom:calc(20px + env(safe-area-inset-bottom,0px));
   border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:16px 26px; font-weight:600; font-size:16px;
-  display:flex; gap:10px; align-items:center; box-shadow:0 0 0 6px var(--bg)}
+  display:flex; gap:10px; align-items:center; white-space:nowrap; box-shadow:0 0 0 6px var(--bg)}
 .fab svg{width:18px; height:18px}
 
 /* Sheet */
@@ -116,6 +161,8 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 .seg{display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:3px; background:var(--soft); border-radius:12px; margin-bottom:18px}
 .seg button{border:0; background:transparent; padding:9px 0; border-radius:9px; font-size:15px; color:var(--mute)}
 .seg button[aria-pressed="true"]{background:var(--fg); color:var(--bg)}
+.seg button small{display:block; font-size:11px; line-height:1.2; margin-top:1px; opacity:.75}
+#typeSeg button{padding:8px 2px}
 
 .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
 .field{display:block}
@@ -151,6 +198,12 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   </header>
 
 
+  <button type="button" id="openCard" class="open-card hidden">
+    <span class="open-dot" aria-hidden="true"></span>
+    <span class="open-main"><b id="openTitle">Ladung läuft</b><span id="openSub"></span></span>
+    <span class="open-go">Beenden</span>
+  </button>
+
   <div class="periods" role="group" aria-label="Zeitraum">
     <button data-p="all" aria-pressed="true">Gesamt</button>
     <button data-p="12m" aria-pressed="false">12 Monate</button>
@@ -163,10 +216,15 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="stat-v" id="sPaid">–</div><div class="stat-l">kWh/100 km bezahlt</div></div>
-    <div class="stat"><div class="stat-v" id="sBatt">–</div><div class="stat-l">kWh/100 km aus dem Akku</div></div>
+    <div class="stat"><div class="stat-v" id="sPaid">–</div><div class="stat-l">kWh/100 km inkl. Ladeverlust</div></div>
+    <div class="stat"><div class="stat-v" id="sBatt">–</div><div class="stat-l">kWh/100 km ab Akku</div></div>
     <div class="stat"><div class="stat-v" id="sCost">–</div><div class="stat-l">Kosten gesamt</div></div>
   </div>
+
+  <section>
+    <h2 id="saveTitle">Ersparnis gegenüber Verbrenner</h2>
+    <div id="saveBody"></div>
+  </section>
 
   <section>
     <h2>Kosten pro Monat <small id="chartSum"></small></h2>
@@ -175,11 +233,19 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   </section>
 
   <section>
-    <h2>Preis pro kWh</h2>
-    <div class="compare">
-      <div class="cmp"><div class="cmp-v" id="pHome">–</div><div class="cmp-l">Zuhause</div></div>
-      <div class="cmp"><div class="cmp-v" id="pAway">–</div><div class="cmp-l">Unterwegs</div></div>
-    </div>
+    <h2>Verbrauch pro Monat <small id="consAvg"></small></h2>
+    <div class="chart" id="consChart"></div>
+    <p class="note" id="consNote"></p>
+  </section>
+
+  <section>
+    <h2>Kilometer pro Monat <small id="kmAvg"></small></h2>
+    <div class="chart" id="kmChart"></div>
+  </section>
+
+  <section>
+    <h2>Wo du lädst <small id="mixAvg"></small></h2>
+    <div id="mixBody"></div>
   </section>
 
   <section>
@@ -190,8 +256,8 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 </div>
 
 <button class="fab" id="btnAdd">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-  Ladung erfassen
+  <svg id="fabIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  <span id="fabLabel">Ladung erfassen</span>
 </button>
 
 <!-- Ladung -->
@@ -200,10 +266,11 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     <div class="sheet-h"><h3 id="chargeTitle">Neue Ladung</h3><button type="button" class="close" data-close>Schließen</button></div>
 
     <div class="seg" role="group" aria-label="Ladeart" id="typeSeg">
-      <button type="button" data-t="home" aria-pressed="true">Zuhause</button>
-      <button type="button" data-t="ac" aria-pressed="false">AC</button>
-      <button type="button" data-t="dc" aria-pressed="false">DC</button>
+      <button type="button" data-t="home" aria-pressed="true">Zuhause<small>Wallbox, Steckdose</small></button>
+      <button type="button" data-t="ac" aria-pressed="false">AC<small>Normalladen</small></button>
+      <button type="button" data-t="dc" aria-pressed="false">DC<small>Schnellladen</small></button>
     </div>
+    <div class="chips hidden" id="provWrap"><span class="chips-l">Anbieter</span><div class="chips-row" id="provRow"></div></div>
 
     <div class="grid">
       <label class="field full"><span>Zeitpunkt</span><input type="datetime-local" id="fTs" required></label>
@@ -214,6 +281,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
         <span class="arrow">→</span>
         <label class="field"><span>Akku nachher %</span><input id="fS1" inputmode="numeric" placeholder="80" autocomplete="off"></label>
       </div>
+      <div class="hint" style="grid-column:1/-1; margin-top:-6px">Beide optional. Machen die Verbrauchswerte genauer.</div>
       <label class="field"><span>Geladene kWh</span><input id="fKwh" inputmode="decimal" placeholder="von Säule" autocomplete="off"></label>
       <label class="field"><span>Preis pro kWh</span><input id="fPrice" inputmode="decimal" placeholder="0,35 €" autocomplete="off"></label>
       <label class="field full"><span>Gesamtbetrag (optional)</span><input id="fTotal" inputmode="decimal" placeholder="Nur bei Start- oder Blockiergebühren" autocomplete="off">
@@ -224,6 +292,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     <div class="preview"><div class="preview-l" id="pvLabel">Kosten</div><div class="preview-v" id="pvVal">–</div></div>
     <div class="err" id="err" role="alert"></div>
     <button type="submit" class="primary" id="btnSave">Ladung speichern</button>
+    <button type="button" class="secondary" id="btnStart">Nur Start speichern, später beenden</button>
     <button type="button" class="danger hidden" id="btnDelete">Ladung löschen</button>
   </form>
 </dialog>
@@ -242,6 +311,29 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       <label class="field"><span>Strompreis zuhause</span><input id="sHome" inputmode="decimal">
         <div class="hint">Wird bei „Zuhause“ vorausgefüllt.</div></label>
     </div>
+    <h4 class="h4">Ladeanbieter</h4>
+    <div id="provList"></div>
+    <div class="grid" style="margin-top:12px">
+      <label class="field full"><span>Name</span><input id="pName" placeholder="z. B. EWE Go" autocomplete="off" maxlength="30"></label>
+      <label class="field"><span>AC-Preis pro kWh</span><input id="pAc" inputmode="decimal" placeholder="z. B. 0,44" autocomplete="off"></label>
+      <label class="field"><span>DC-Preis pro kWh</span><input id="pDc" inputmode="decimal" placeholder="z. B. 0,54" autocomplete="off"></label>
+      <div class="hint" id="provHint" style="grid-column:1/-1; margin-top:-4px">Einen der beiden Preise reicht. Beim Erfassen einer Ladung kannst du den Anbieter dann antippen.</div>
+    </div>
+    <button type="button" class="link" id="btnProvAdd">Anbieter hinzufügen</button>
+    <h4 class="h4">Vergleich mit Verbrenner</h4>
+    <div class="seg" role="group" aria-label="Kraftstoff" id="fuelSeg">
+      <button type="button" data-f="benzin" aria-pressed="true">Super E5</button>
+      <button type="button" data-f="e10" aria-pressed="false">E10</button>
+      <button type="button" data-f="diesel" aria-pressed="false">Diesel</button>
+    </div>
+    <div class="grid">
+      <label class="field"><span>Verbrauch l/100 km</span><input id="sFuelL" inputmode="decimal" placeholder="z. B. 6,5" autocomplete="off"></label>
+      <label class="field"><span>Preis pro Liter</span><input id="sFuelP" inputmode="decimal" placeholder="z. B. 1,75" autocomplete="off"></label>
+      <div class="hint" style="grid-column:1/-1; margin-top:-4px">Verbrauch zum Beispiel vom vorherigen Auto. Leer lassen, um den Vergleich auszublenden.</div>
+      <label class="field full"><span>Postleitzahl für aktuelle Spritpreise (optional)</span><input id="sPlz" inputmode="numeric" maxlength="5" placeholder="z. B. 01067" autocomplete="postal-code">
+        <div class="hint" id="fuelStatus">Mit PLZ holt die App täglich den Durchschnittspreis der Tankstellen in der Umgebung. Der Preis oben gilt dann nur noch für Zeiträume ohne Online-Daten.</div></label>
+    </div>
+    <button type="button" class="link" id="btnFuelNow">Spritpreis jetzt abrufen</button>
     <button type="submit" class="primary">Einstellungen speichern</button>
     <button type="button" class="link" id="btnExport">Sicherung exportieren (CSV)</button>
     <button type="button" class="link" id="btnImport">Sicherung importieren</button>
@@ -259,11 +351,12 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 
   const state = {
     charges: [],
-    settings: { car: "", cap: 69, loss: 10, homePrice: 0.35 },
+    settings: { car: "", cap: 69, loss: 10, homePrice: 0.35, fuel: "benzin", fuelL: null, fuelPrice: null, plz: "", fuelHist: {}, fuelLast: null, providers: [] },
     period: "all",
     mode: "local",
     editingId: null,
     type: "home",
+    provider: "",
   };
 
   // ---------- Formatierung ----------
@@ -282,6 +375,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
   };
   const MONTHS = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+  const MONTHS_LONG = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 
   // ---------- Speicher ----------
   const local = {
@@ -314,55 +408,111 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 
   // ---------- Berechnung ----------
   function derive(c, s) {
-    const added = Math.max(0, c.soc1 - c.soc0) / 100 * s.cap;
+    const hasSoc = c.soc0 != null && c.soc1 != null && c.soc1 > c.soc0;
+    const added = hasSoc ? (c.soc1 - c.soc0) / 100 * s.cap : null;
     const estimated = c.kwh == null;
-    const paid = estimated ? added * (1 + s.loss / 100) : c.kwh;
-    const cost = c.total != null ? c.total : (c.price != null ? paid * c.price : null);
+    const paid = !estimated ? c.kwh : added != null ? added * (1 + s.loss / 100) : null;
+    const cost = c.total != null ? c.total : (c.price != null && paid != null ? paid * c.price : null);
     return { added, paid, cost, estimated };
+  }
+  const API_TYPE = { benzin: "e5", e10: "e10", diesel: "diesel" };
+  function histOf(s) { return (s.fuelHist || {})[s.fuel] || {}; }
+  function latestFetched(s) {
+    const h = histOf(s); const ks = Object.keys(h).sort();
+    if (!ks.length) return null; const m = h[ks[ks.length - 1]]; return m.n ? m.sum / m.n : null;
+  }
+  function fuelPriceFor(ts, s) {
+    const m = histOf(s)[ts.slice(0, 7)];
+    if (m && m.n) return m.sum / m.n;
+    if (s.fuelPrice > 0) return s.fuelPrice;
+    return latestFetched(s);
   }
   const sortAsc = (a, b) => (a.ts < b.ts ? -1 : a.ts > b.ts ? 1 : a.odo - b.odo);
 
   function compute() {
     const s = state.settings;
-    const all = [...state.charges].sort(sortAsc);
+    const all = state.charges.filter((c) => !c.open).sort(sortAsc);
     const now = Date.now();
     const from = state.period === "30d" ? now - 30 * 864e5 : state.period === "12m" ? now - 365 * 864e5 : -Infinity;
     const inP = (c) => new Date(c.ts).getTime() >= from;
+    const ds = all.map((c) => derive(c, s));
 
-    let km = 0, used = 0, added = 0, paidAll = 0, cost = 0, paidCosted = 0;
-    const byType = { home: { c: 0, k: 0 }, away: { c: 0, k: 0 } };
-    const rows = [];
+    // Ladeverlust und Strompreis über alle Ladungen
+    let addedT = 0, paidT = 0, costT = 0, paidCostedT = 0;
+    ds.forEach((d) => {
+      if (d.added != null && !d.estimated) { addedT += d.added; paidT += d.paid; }
+      if (d.cost != null && d.paid) { costT += d.cost; paidCostedT += d.paid; }
+    });
+    const factor = addedT > 0 ? paidT / addedT : 1 + s.loss / 100;
+    const priceT = paidCostedT > 0 ? costT / paidCostedT : null;
+    const priceOf = (d) => (d.cost != null && d.paid > 0 ? d.cost / d.paid : priceT);
 
-    all.forEach((c, i) => {
-      const d = derive(c, s);
+    // Strecken zwischen zwei Ladungen
+    const rows = all.map((c, i) => {
+      const d = ds[i];
       let seg = null;
       if (i > 0) {
-        const p = all[i - 1];
-        const dk = c.odo - p.odo;
-        const du = (p.soc1 - c.soc0) / 100 * s.cap;
-        if (dk > 0 && du > 0) seg = { km: dk, used: du, cons: du / dk * 100 };
+        const p = all[i - 1], pd = ds[i - 1];
+        const km = c.odo - p.odo;
+        if (km > 0) {
+          let used = null, energy = null, price = null;
+          if (p.soc1 != null && c.soc0 != null && p.soc1 > c.soc0) {
+            used = (p.soc1 - c.soc0) / 100 * s.cap;   // genau: Akkustände bekannt
+            energy = used * factor; price = priceOf(pd);
+          } else if (d.paid != null) {
+            energy = d.paid; price = priceOf(d);       // Näherung: nachgeladene Menge
+          }
+          if (energy != null) seg = { km, used, energy, price, cons: energy / km * 100 };
+        }
       }
-      rows.push({ c, d, seg });
-      if (!inP(c)) return;
-      if (seg) { km += seg.km; used += seg.used; }
-      if (d.added > 0) { added += d.added; paidAll += d.paid; }
-      if (d.cost != null) {
-        cost += d.cost; paidCosted += d.paid;
-        const g = c.type === "home" ? byType.home : byType.away;
-        g.c += d.cost; g.k += d.paid;
-      }
+      return { c, d, seg };
     });
 
-    const battCons = km > 0 ? used / km * 100 : null;
-    const factor = added > 0 ? paidAll / added : 1 + s.loss / 100;
-    const paidCons = battCons != null ? battCons * factor : null;
-    const avgPrice = paidCosted > 0 ? cost / paidCosted : null;
-    const per100 = paidCons != null && avgPrice != null ? paidCons * avgPrice : null;
+    let km = 0, energy = 0, kmB = 0, usedB = 0, kmC = 0, evCost = 0, cost = 0;
+    const byType = {};
+    ["home", "ac", "dc"].forEach((t) => (byType[t] = { n: 0, kwh: 0, cost: 0, kc: 0 }));
+    rows.forEach(({ c, d, seg }) => {
+      if (!inP(c)) return;
+      if (seg) {
+        km += seg.km; energy += seg.energy;
+        if (seg.used != null) { kmB += seg.km; usedB += seg.used; }
+        if (seg.price != null) { kmC += seg.km; evCost += seg.energy * seg.price; }
+      }
+      const g = byType[c.type] || byType.home;
+      g.n += 1;
+      if (d.paid) g.kwh += d.paid;
+      if (d.cost != null) {
+        cost += d.cost; g.cost += d.cost;
+        if (d.paid) g.kc += d.paid;
+      }
+    });
+    const battCons = kmB > 0 ? usedB / kmB * 100 : null;
+    const paidCons = km > 0 ? energy / km * 100 : null;
+    const per100 = kmC > 0 ? evCost / kmC * 100 : null;
+
+    // Vergleich mit Verbrenner
+    const fuelOn = s.fuelL > 0 && (s.fuelPrice > 0 || latestFetched(s) != null);
+    const series = [];
+    let sKm = 0, sEv = 0, sFuel = 0;
+    if (fuelOn && priceT != null) {
+      let cum = 0;
+      rows.forEach((r, i) => {
+        if (i === 0) { series.push({ t: r.c.ts, v: 0 }); return; }
+        if (r.seg && r.seg.price != null) {
+          const ev = r.seg.energy * r.seg.price;
+          const fu = r.seg.km / 100 * s.fuelL * fuelPriceFor(r.c.ts, s);
+          cum += fu - ev;
+          if (inP(r.c)) { sKm += r.seg.km; sEv += ev; sFuel += fu; }
+        }
+        series.push({ t: r.c.ts, v: cum });
+      });
+    }
+    const savings = { on: fuelOn, km: sKm, ev: sEv, fuel: sFuel, diff: sFuel - sEv, series };
+
     return {
-      rows, km, battCons, paidCons, per100, cost,
-      nInPeriod: all.filter(inP).length,
-      pHome: byType.home.k > 0 ? byType.home.c / byType.home.k : null,
-      pAway: byType.away.k > 0 ? byType.away.c / byType.away.k : null,
+      rows, km: kmC, battCons, paidCons, per100, cost, savings,
+      nInPeriod: all.filter(inP).length, nClosed: all.length,
+      byType,
     };
   }
 
@@ -376,16 +526,169 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     else { hero.textContent = "0,00"; hero.classList.add("empty"); }
     $("heroCap").innerHTML = r.per100 != null
       ? `Euro pro 100 km, über <b>${f0.format(r.km)} km</b>`
-      : state.charges.length < 2 ? "Euro pro 100 km. Ab der zweiten Ladung wird gerechnet." : "Euro pro 100 km. Noch keine auswertbare Strecke in diesem Zeitraum.";
+      : r.nClosed < 2 ? "Euro pro 100 km. Ab der zweiten Ladung wird gerechnet." : "Euro pro 100 km. Noch keine auswertbare Strecke in diesem Zeitraum.";
 
     $("sPaid").textContent = r.paidCons != null ? f1.format(r.paidCons) : "–";
     $("sBatt").textContent = r.battCons != null ? f1.format(r.battCons) : "–";
     $("sCost").textContent = r.nInPeriod ? f0.format(r.cost) + " €" : "–";
-    $("pHome").textContent = r.pHome != null ? f2.format(r.pHome) + " €" : "–";
-    $("pAway").textContent = r.pAway != null ? f2.format(r.pAway) + " €" : "–";
+    renderMix(r.byType);
 
+    const open = state.charges.find((c) => c.open);
+    $("openCard").classList.toggle("hidden", !open);
+    $("fabLabel").textContent = open ? "Ladung beenden" : "Ladung erfassen";
+    $("fabIcon").innerHTML = open ? '<path d="M5 12.5l4.5 4.5L19 7.5"/>' : '<path d="M12 5v14M5 12h14"/>';
+    if (open) {
+      const t = new Date(open.ts);
+      const sameDay = t.toDateString() === new Date().toDateString();
+      $("openTitle").textContent = "Ladung läuft, " + TYPE_LABEL[open.type];
+      $("openSub").textContent = (sameDay ? "Seit " : "Seit " + t.getDate() + ". " + MONTHS[t.getMonth()] + ", ") +
+        t.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) + " Uhr" +
+        (open.soc0 != null ? ", Start bei " + f0.format(open.soc0) + " %" : "");
+    }
+    renderSavings(r.savings);
     renderChart();
+    renderMonthly(r.rows);
     renderList(r.rows);
+  }
+
+  function renderMix(bt) {
+    const types = [["home", "Zuhause"], ["ac", "AC unterwegs"], ["dc", "DC Schnellladen"]];
+    const totKwh = types.reduce((a, [t]) => a + bt[t].kwh, 0);
+    const totN = types.reduce((a, [t]) => a + bt[t].n, 0);
+    const totCost = types.reduce((a, [t]) => a + bt[t].cost, 0);
+    const totKc = types.reduce((a, [t]) => a + bt[t].kc, 0);
+    const avg = totKc > 0 ? totCost / totKc : null;
+    $("mixAvg").textContent = avg != null ? `Ø ${f2.format(avg)} € pro kWh` : "";
+    const body = $("mixBody");
+    if (!totN) { body.innerHTML = `<div class="save-empty">Sobald du Ladungen erfasst hast, siehst du hier, wie viel du zuhause, an AC-Säulen und am Schnelllader lädst und was es jeweils kostet.</div>`; return; }
+
+    let html = `<div class="mixbar" role="img" aria-label="Anteil der geladenen Energie">` +
+      types.filter(([t]) => bt[t].kwh > 0).map(([t]) => `<i class="sw-${t}" style="flex:${bt[t].kwh}"></i>`).join("") + `</div>`;
+    for (const [t, name] of types) {
+      const g = bt[t];
+      if (!g.n) continue;
+      const share = totKwh > 0 ? Math.round(g.kwh / totKwh * 100) : 0;
+      const pk = g.kc > 0 ? g.cost / g.kc : null;
+      html += `<div class="mixrow">
+        <span class="sw sw-${t}"></span>
+        <div><div class="mix-n">${name}</div><div class="mix-s">${g.n} ${g.n === 1 ? "Ladung" : "Ladungen"}, ${f0.format(g.kwh)} kWh, ${share} %</div></div>
+        <div class="mix-p">${pk != null ? f2.format(pk) + " €" : "–"}<small>${f0.format(g.cost)} € gesamt</small></div>
+      </div>`;
+    }
+    // Was unterwegs laden gekostet hat, verglichen mit Laden zuhause
+    const home = bt.home.kc > 0 ? bt.home.cost / bt.home.kc : state.settings.homePrice;
+    const awayKc = bt.ac.kc + bt.dc.kc, awayCost = bt.ac.cost + bt.dc.cost;
+    const extra = home > 0 && awayKc > 0 ? awayCost - awayKc * home : 0;
+    if (extra > 1) html += `<p class="mix-note">Unterwegs laden hat dich <b>${f0.format(extra)} € mehr</b> gekostet, als wenn du dieselbe Menge zuhause geladen hättest.</p>`;
+    const avgKwh = totN ? totKwh / totN : 0;
+    if (avgKwh > 0) html += `<p class="mix-note">Im Schnitt lädst du <b>${f1.format(avgKwh)} kWh</b> pro Ladung für <b>${f2.format(totCost / totN)} €</b>.</p>`;
+    body.innerHTML = html;
+  }
+
+  const escapeHtml = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function renderSavings(sv) {
+    const s = state.settings;
+    const fuelName = s.fuel === "diesel" ? "Diesel" : "Benzin";
+    const live = s.plz && s.fuelLast && s.fuelLast.type === s.fuel ? s.fuelLast : null;
+    $("saveTitle").textContent = sv.on ? `Ersparnis gegenüber ${fuelName}` : "Ersparnis gegenüber Verbrenner";
+    const body = $("saveBody");
+    if (!sv.on) {
+      body.innerHTML = `<div class="save-empty">Trag in den Einstellungen Verbrauch und Literpreis eines Verbrenners ein, zum Beispiel von deinem vorherigen Auto. Dann siehst du hier, was du sparst.<br><button type="button" id="btnSaveSetup">Vergleich einrichten</button></div>`;
+      $("btnSaveSetup").addEventListener("click", openSettings);
+      return;
+    }
+    if (sv.km <= 0) {
+      body.innerHTML = `<div class="save-empty">Ab der zweiten Ladung mit Preisangabe wird hier gerechnet.</div>`;
+      return;
+    }
+    const sign = sv.diff >= 0 ? "+" : "−";
+    body.innerHTML = `
+      <div class="save-num${sv.diff < 0 ? " neg" : ""}">${sign}${f0.format(Math.abs(sv.diff))} €</div>
+      <div class="save-cap">${fuelName} hätte für <b>${f0.format(sv.km)} km</b> etwa <b>${f0.format(sv.fuel)} €</b> gekostet, Strom <b>${f0.format(sv.ev)} €</b>.${live ? ` Aktuell kostet ${fuelName} rund um ${escapeHtml(live.place || live.plz)} im Schnitt <b>${f2.format(live.price)} €</b> pro Liter.` : ""}</div>
+      <div class="save-chart" id="saveChart"></div>`;
+
+    const pts = sv.series;
+    if (pts.length < 3) return;
+    const W = 480, H = 150, padT = 22, padB = 24;
+    const t0 = new Date(pts[0].t).getTime(), t1 = new Date(pts[pts.length - 1].t).getTime();
+    const span = Math.max(1, t1 - t0);
+    const vals = pts.map((p) => p.v);
+    const vmin = Math.min(0, ...vals), vmax = Math.max(0, ...vals);
+    const vr = Math.max(1, vmax - vmin);
+    const X = (t) => ((new Date(t).getTime() - t0) / span) * (W - 8) + 4;
+    const Y = (v) => padT + (1 - (v - vmin) / vr) * (H - padT - padB);
+    const line = pts.map((p) => `${X(p.t).toFixed(1)},${Y(p.v).toFixed(1)}`).join(" ");
+    const last = pts[pts.length - 1];
+    const d0 = new Date(pts[0].t), d1 = new Date(last.t);
+    const lab = (d) => MONTHS[d.getMonth()] + " " + String(d.getFullYear()).slice(2);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ersparnis im Zeitverlauf">`;
+    svg += `<line x1="0" x2="${W}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" stroke-width="1"/>`;
+    svg += `<polygon points="${X(pts[0].t)},${Y(0)} ${line} ${X(last.t)},${Y(0)}" fill="var(--soft)"/>`;
+    svg += `<polyline points="${line}" fill="none" stroke="var(--fg)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    svg += `<circle cx="${X(last.t)}" cy="${Y(last.v)}" r="4" fill="var(--fg)"/>`;
+    svg += `<text x="${Math.min(X(last.t), W - 4)}" y="${Math.max(12, Y(last.v) - 10)}" text-anchor="end" font-size="12" fill="var(--fg)" font-family="inherit">${last.v >= 0 ? "+" : "−"}${f0.format(Math.abs(last.v))} € gesamt</text>`;
+    svg += `<text x="4" y="${H - 4}" font-size="12" fill="var(--mute)" font-family="inherit">${lab(d0)}</text>`;
+    svg += `<text x="${W - 4}" y="${H - 4}" text-anchor="end" font-size="12" fill="var(--mute)" font-family="inherit">${lab(d1)}</text>`;
+    $("saveChart").innerHTML = svg + "</svg>";
+  }
+
+  // Balkendiagramm für die letzten 12 Monate
+  function barChart(el, months, key, fmtV, avg, label) {
+    const vals = months.map((m) => m[key]);
+    const max = Math.max(1, ...vals.filter((v) => v != null));
+    const W = 480, H = 170, base = 140, top = 20, n = months.length, gap = 6;
+    const bw = (W - gap * (n - 1)) / n;
+    const Y = (v) => base - (v / max) * (base - top);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">`;
+    svg += `<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)" stroke-width="1"/>`;
+    let lastIdx = -1; months.forEach((m, i) => { if (m[key] != null && m[key] > 0) lastIdx = i; });
+    months.forEach((m, i) => {
+      const x = i * (bw + gap), v = m[key], last = i === lastIdx;
+      if (v != null && v > 0) {
+        svg += `<rect x="${x}" y="${Y(v)}" width="${bw}" height="${base - Y(v)}" rx="3" fill="${last ? "var(--fg)" : "var(--bar2)"}"/>`;
+        svg += `<text x="${x + bw / 2}" y="${Y(v) - 6}" text-anchor="middle" font-size="11" fill="${last ? "var(--fg)" : "var(--mute)"}" font-family="inherit">${fmtV(v)}</text>`;
+      }
+      svg += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="11" fill="${last ? "var(--fg)" : "var(--mute)"}" font-family="inherit">${m.label}</text>`;
+    });
+    if (avg != null) svg += `<line x1="0" x2="${W}" y1="${Y(avg)}" y2="${Y(avg)}" stroke="var(--fg)" stroke-width="1" stroke-dasharray="3 4" opacity=".6"/>`;
+    el.innerHTML = svg + "</svg>";
+  }
+
+  function renderMonthly(rows) {
+    const now = new Date();
+    const months = [];
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push({ key: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"), label: MONTHS[d.getMonth()], long: MONTHS_LONG[d.getMonth()], km: 0, energy: 0, kmE: 0, cons: null });
+    }
+    for (const { c, seg } of rows) {
+      if (!seg) continue;
+      const m = months.find((x) => x.key === c.ts.slice(0, 7));
+      if (!m) continue;
+      m.km += seg.km; m.energy += seg.energy; m.kmE += seg.km;
+    }
+    months.forEach((m) => { m.cons = m.kmE >= 100 ? m.energy / m.kmE * 100 : null; if (!m.km) m.km = null; });
+    // erst ab dem ersten Monat mit Daten zeigen, mindestens 6 Monate
+    let first = months.findIndex((m) => m.km);
+    if (first === -1) first = 6;
+    const shown = months.slice(Math.min(first, 6));
+
+    const withCons = shown.filter((m) => m.cons != null);
+    const totE = withCons.reduce((a, m) => a + m.energy, 0), totK = withCons.reduce((a, m) => a + m.kmE, 0);
+    const avgCons = totK > 0 ? totE / totK * 100 : null;
+    const withKm = shown.filter((m) => m.km);
+    const avgKm = withKm.length ? withKm.reduce((a, m) => a + m.km, 0) / withKm.length : null;
+
+    $("consAvg").textContent = avgCons != null ? `Ø ${f1.format(avgCons)} kWh/100 km` : "";
+    $("kmAvg").textContent = avgKm != null ? `Ø ${f0.format(avgKm)} km` : "";
+    barChart($("consChart"), shown, "cons", (v) => f1.format(v), avgCons, "Verbrauch pro Monat");
+    barChart($("kmChart"), shown, "km", (v) => f0.format(v), avgKm, "Kilometer pro Monat");
+
+    const hi = withCons.reduce((a, m) => (!a || m.cons > a.cons ? m : a), null);
+    const lo = withCons.reduce((a, m) => (!a || m.cons < a.cons ? m : a), null);
+    $("consNote").textContent = withCons.length >= 3 && hi && lo && hi.cons - lo.cons >= 1
+      ? `Höchster Verbrauch im ${hi.long} mit ${f1.format(hi.cons)}, niedrigster im ${lo.long} mit ${f1.format(lo.cons)} kWh/100 km. Werte inklusive Ladeverlust.`
+      : "Werte inklusive Ladeverlust. Monate unter 100 km werden nicht angezeigt.";
   }
 
   function renderChart() {
@@ -397,6 +700,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       months.push({ key: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"), label: MONTHS[d.getMonth()], home: 0, away: 0 });
     }
     for (const c of state.charges) {
+      if (c.open) continue;
       const m = months.find((x) => x.key === c.ts.slice(0, 7));
       if (!m) continue;
       const cost = derive(c, s).cost || 0;
@@ -425,6 +729,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     list.innerHTML = "";
     $("count").textContent = rows.length ? rows.length : "";
     if (!rows.length) {
+      if (state.charges.some((c) => c.open)) { list.innerHTML = ""; $("listNote").textContent = ""; return; }
       list.innerHTML = `<li class="empty-state"><b>Noch keine Ladung erfasst.</b>Trag nach dem nächsten Laden Kilometerstand, Akkustand und Preis ein. Ab der zweiten Ladung siehst du Verbrauch und Kosten pro 100 km.</li>`;
       $("listNote").textContent = "";
       return;
@@ -436,15 +741,16 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       const li = document.createElement("li");
       const b = document.createElement("button");
       b.className = "row"; b.type = "button";
-      const kwhTxt = (d.estimated ? "<i>" : "") + f1.format(d.paid) + " kWh" + (d.estimated ? "</i>" : "");
+      const kwhTxt = d.paid == null ? "" : (d.estimated ? "<i>" : "") + f1.format(d.paid) + " kWh" + (d.estimated ? "</i>" : "");
+      const socTxt = c.soc0 != null && c.soc1 != null ? `${f0.format(c.soc0)} → ${f0.format(c.soc1)} %` : c.soc1 != null ? `bis ${f0.format(c.soc1)} %` : "";
       b.innerHTML = `
         <div class="date"><b>${dt.getDate()}</b><span>${MONTHS[dt.getMonth()]}</span></div>
         <div class="row-main">
           <div class="row-t"></div>
-          <div class="row-s">${f0.format(c.soc0)} → ${f0.format(c.soc1)} %, ${kwhTxt}</div>
+          <div class="row-s">${[socTxt, kwhTxt].filter(Boolean).join(", ")}</div>
         </div>
         <div class="row-c">${eur(d.cost)}<small>${seg ? f1.format(seg.cons) + " kWh/100" : ""}</small></div>`;
-      b.querySelector(".row-t").textContent = TYPE_LABEL[c.type] + (c.note ? ", " + c.note : "");
+      b.querySelector(".row-t").textContent = [TYPE_LABEL[c.type], c.provider, c.note].filter(Boolean).join(", ");
       b.addEventListener("click", () => openCharge(c));
       li.appendChild(b); list.appendChild(li);
     }
@@ -458,6 +764,36 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     state.type = t;
     document.querySelectorAll("#typeSeg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.t === t)));
   }
+  const provs = () => state.settings.providers || [];
+  const provById = (id) => provs().find((p) => p.id === id) || null;
+  const provPrice = (p, t) => (p ? (t === "dc" ? (p.dc ?? p.ac) : (p.ac ?? p.dc)) : null);
+  function renderProvChips() {
+    const wrap = $("provWrap"), row = $("provRow");
+    const list = provs();
+    const show = state.type !== "home" && list.length > 0;
+    wrap.classList.toggle("hidden", !show);
+    if (!show) return;
+    row.innerHTML = "";
+    const mk = (id, name, price) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "chip";
+      b.setAttribute("aria-pressed", String(state.provider === id));
+      b.textContent = name;
+      if (price != null) { const sm = document.createElement("small"); sm.textContent = f2.format(price) + " €"; b.appendChild(sm); }
+      b.addEventListener("click", () => selectProvider(id));
+      row.appendChild(b);
+    };
+    mk("", "Ohne Anbieter", null);
+    list.forEach((p) => mk(p.id, p.name, provPrice(p, state.type)));
+  }
+  function selectProvider(id) {
+    state.provider = id;
+    const p = provById(id);
+    const price = provPrice(p, state.type);
+    if (price != null) F.price.value = fmtIn(price, 2);
+    renderProvChips();
+    updatePreview();
+  }
   function lastPriceFor(t) {
     if (t === "home") return state.settings.homePrice;
     const same = [...state.charges].filter((c) => c.type === t && c.price != null).sort(sortAsc);
@@ -467,8 +803,11 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 
   function openCharge(c) {
     state.editingId = c ? c.id : null;
-    $("chargeTitle").textContent = c ? "Ladung bearbeiten" : "Neue Ladung";
-    $("btnSave").textContent = c ? "Änderungen speichern" : "Ladung speichern";
+    const isOpen = !!(c && c.open);
+    $("chargeTitle").textContent = isOpen ? "Ladung beenden" : c ? "Ladung bearbeiten" : "Neue Ladung";
+    $("btnSave").textContent = isOpen ? "Ladung abschließen" : c ? "Änderungen speichern" : "Ladung speichern";
+    $("btnStart").classList.toggle("hidden", !!c && !isOpen);
+    $("btnStart").textContent = isOpen ? "Zwischenstand speichern" : "Nur Start speichern, später beenden";
     $("btnDelete").classList.toggle("hidden", !c);
     $("err").textContent = "";
     document.querySelectorAll("#formCharge .field").forEach((f) => f.classList.remove("bad"));
@@ -476,18 +815,26 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     setType(t);
     F.ts.value = c ? c.ts : nowLocal();
     F.odo.value = c ? String(c.odo) : "";
-    F.s0.value = c ? String(c.soc0) : "";
-    F.s1.value = c ? String(c.soc1) : "";
+    F.s0.value = c && c.soc0 != null ? String(c.soc0) : "";
+    F.s1.value = c && c.soc1 != null ? String(c.soc1) : "";
     F.kwh.value = c && c.kwh != null ? fmtIn(c.kwh, 2) : "";
-    const p = c ? c.price : lastPriceFor(t);
+    if (c) state.provider = c.providerId && provById(c.providerId) ? c.providerId : "";
+    else {
+      const lastSame = [...state.charges].filter((x) => x.type === t && !x.open).sort(sortAsc).at(-1);
+      state.provider = t !== "home" && lastSame && lastSame.providerId && provById(lastSame.providerId) ? lastSame.providerId : "";
+    }
+    const pv = !c && state.provider ? provPrice(provById(state.provider), t) : null;
+    const p = c ? c.price : pv != null ? pv : lastPriceFor(t);
     F.price.value = p != null ? fmtIn(p, 2) : "";
     F.total.value = c && c.total != null ? fmtIn(c.total, 2) : "";
     F.note.value = c ? c.note || "" : "";
-    const last = [...state.charges].filter((x) => !c || x.id !== c.id).sort(sortAsc).at(-1);
+    const last = [...state.charges].filter((x) => !x.open && (!c || x.id !== c.id)).sort(sortAsc).at(-1);
     $("odoHint").textContent = last ? `Zuletzt ${f0.format(last.odo)} km` : "";
+    renderProvChips();
     updatePreview();
     dlg.showModal();
     if (!c) setTimeout(() => F.odo.focus(), 250);
+    else if (isOpen) setTimeout(() => F.s1.focus(), 250);
   }
 
   function readForm() {
@@ -512,17 +859,21 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     $("pvVal").textContent = eur(cost);
   }
 
-  function validate(v) {
+  function validate(v, startOnly) {
     const bad = [];
     const fail = (el, msg) => { bad.push([el, msg]); };
     if (!v.ts) fail(F.ts, "Zeitpunkt fehlt.");
     if (v.odo == null || isNaN(v.odo) || v.odo < 0) fail(F.odo, "Kilometerstand fehlt.");
-    if (v.soc0 == null || isNaN(v.soc0) || v.soc0 < 0 || v.soc0 > 100) fail(F.s0, "Akku vorher muss zwischen 0 und 100 % liegen.");
-    if (v.soc1 == null || isNaN(v.soc1) || v.soc1 < 0 || v.soc1 > 100) fail(F.s1, "Akku nachher muss zwischen 0 und 100 % liegen.");
-    else if (v.soc0 != null && v.soc1 <= v.soc0) fail(F.s1, "Akku nachher muss höher sein als vorher.");
+    const badPct = (x) => x != null && (isNaN(x) || x < 0 || x > 100);
+    if (badPct(v.soc0)) fail(F.s0, "Akku vorher muss zwischen 0 und 100 % liegen.");
+    if (badPct(v.soc1)) fail(F.s1, "Akku nachher muss zwischen 0 und 100 % liegen.");
+    else if (v.soc0 != null && v.soc1 != null && v.soc1 <= v.soc0) fail(F.s1, "Akku nachher muss höher sein als vorher.");
     if (v.kwh != null && (isNaN(v.kwh) || v.kwh <= 0)) fail(F.kwh, "Geladene kWh ist keine gültige Zahl.");
     if (v.total != null && (isNaN(v.total) || v.total < 0)) fail(F.total, "Gesamtbetrag ist keine gültige Zahl.");
-    if ((v.price == null || isNaN(v.price)) && v.total == null) fail(F.price, "Preis pro kWh oder Gesamtbetrag angeben.");
+    if (!startOnly) {
+      if (v.kwh == null && (v.soc0 == null || v.soc1 == null)) fail(F.kwh, "Geladene kWh eintragen oder beide Akkuwerte.");
+      if ((v.price == null || isNaN(v.price)) && v.total == null) fail(F.price, "Preis pro kWh oder Gesamtbetrag angeben.");
+    }
     if (!bad.length && v.odo != null) {
       const others = state.charges.filter((c) => c.id !== state.editingId);
       const earlierHigher = others.find((c) => c.ts < v.ts && c.odo > v.odo);
@@ -537,19 +888,23 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     return !bad.length;
   }
 
-  $("formCharge").addEventListener("submit", async (e) => {
-    e.preventDefault();
+  async function saveCharge(startOnly) {
     const v = readForm();
-    if (!validate(v)) return;
+    if (!validate(v, startOnly)) return;
     const c = {
       id: state.editingId || newId(), ts: v.ts, odo: v.odo, soc0: v.soc0, soc1: v.soc1,
       kwh: v.kwh, price: v.price != null && !isNaN(v.price) ? v.price : null, total: v.total, type: v.type, note: v.note,
     };
-    const btn = $("btnSave"); btn.disabled = true;
+    const pv = v.type !== "home" ? provById(state.provider) : null;
+    if (pv) { c.providerId = pv.id; c.provider = pv.name; }
+    if (startOnly) c.open = true;
+    const btn = startOnly ? $("btnStart") : $("btnSave"); btn.disabled = true;
     try { await putCharge(c); dlg.close(); }
-    catch (err) { $("err").textContent = err && err.code === "quota_exceeded" ? "Speicher voll. Lösche alte Ladungen, um neue anzulegen." : "Speichern hat nicht geklappt. Versuch es gleich noch einmal."; }
+    catch (err) { $("err").textContent = "Speichern hat nicht geklappt. Versuch es gleich noch einmal."; }
     finally { btn.disabled = false; }
-  });
+  }
+  $("formCharge").addEventListener("submit", (e) => { e.preventDefault(); saveCharge(false); });
+  $("btnStart").addEventListener("click", () => saveCharge(true));
 
   $("btnDelete").addEventListener("click", async () => {
     if (!state.editingId || !confirm("Diese Ladung endgültig löschen?")) return;
@@ -561,34 +916,149 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   document.querySelectorAll("#typeSeg button").forEach((b) => b.addEventListener("click", () => {
     const prevDefault = lastPriceFor(state.type);
     const cur = parseNum(F.price.value);
+    const prevProvPrice = provPrice(provById(state.provider), state.type);
     setType(b.dataset.t);
-    if (!state.editingId && (F.price.value === "" || (prevDefault != null && cur === prevDefault))) {
+    if (b.dataset.t === "home") state.provider = "";
+    const pp = provPrice(provById(state.provider), b.dataset.t);
+    if (pp != null && (F.price.value === "" || cur === prevProvPrice)) {
+      F.price.value = fmtIn(pp, 2);
+    } else if (!state.editingId && (F.price.value === "" || (prevDefault != null && cur === prevDefault) || (prevProvPrice != null && cur === prevProvPrice))) {
       const p = lastPriceFor(b.dataset.t);
       F.price.value = p != null ? fmtIn(p, 2) : "";
     }
+    renderProvChips();
     updatePreview();
   }));
 
   // ---------- Einstellungen ----------
   const dlgS = $("dlgSettings");
-  $("btnSettings").addEventListener("click", () => {
+  function setFuel(f) {
+    document.querySelectorAll("#fuelSeg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.f === f)));
+  }
+  document.querySelectorAll("#fuelSeg button").forEach((b) => b.addEventListener("click", () => setFuel(b.dataset.f)));
+  $("btnSettings").addEventListener("click", () => openSettings());
+  let provEdit = null;
+  function renderProvList() {
+    const el = $("provList");
+    el.innerHTML = "";
+    provs().forEach((p) => {
+      const row = document.createElement("div"); row.className = "prov";
+      const main = document.createElement("button"); main.type = "button"; main.className = "prov-main";
+      const nm = document.createElement("b"); nm.textContent = p.name;
+      const pr = document.createElement("span");
+      pr.textContent = [p.ac != null ? "AC " + f2.format(p.ac) + " €" : "", p.dc != null ? "DC " + f2.format(p.dc) + " €" : ""].filter(Boolean).join(", ");
+      main.append(nm, pr);
+      main.addEventListener("click", () => {
+        provEdit = p.id; $("pName").value = p.name;
+        $("pAc").value = p.ac != null ? fmtIn(p.ac, 2) : ""; $("pDc").value = p.dc != null ? fmtIn(p.dc, 2) : "";
+        $("btnProvAdd").textContent = "Änderung übernehmen"; $("pName").focus();
+      });
+      const x = document.createElement("button"); x.type = "button"; x.className = "prov-x"; x.textContent = "Entfernen";
+      x.addEventListener("click", () => {
+        if (!confirm(`„${p.name}“ entfernen? Bisherige Ladungen behalten den Namen.`)) return;
+        saveProviders(provs().filter((q) => q.id !== p.id));
+      });
+      row.append(main, x); el.appendChild(row);
+    });
+  }
+  function saveProviders(list) {
+    state.settings = { ...state.settings, providers: list };
+    local.saveSet(state.settings);
+    renderProvList();
+  }
+  $("btnProvAdd").addEventListener("click", () => {
+    const name = $("pName").value.trim();
+    const ac = parseNum($("pAc").value), dc = parseNum($("pDc").value);
+    const okP = (x) => x == null || (!isNaN(x) && x >= 0 && x < 5);
+    if (!name) { $("provHint").textContent = "Bitte einen Namen eintragen."; return; }
+    if (!okP(ac) || !okP(dc) || (ac == null && dc == null)) { $("provHint").textContent = "Bitte mindestens einen gültigen Preis eintragen, z. B. 0,44."; return; }
+    const entry = { id: provEdit || newId(), name, ac, dc };
+    const list = provs().filter((p) => p.id !== entry.id);
+    const idx = provs().findIndex((p) => p.id === entry.id);
+    if (idx >= 0) list.splice(idx, 0, entry); else list.push(entry);
+    saveProviders(list);
+    provEdit = null; $("pName").value = ""; $("pAc").value = ""; $("pDc").value = "";
+    $("btnProvAdd").textContent = "Anbieter hinzufügen";
+    $("provHint").textContent = `„${name}“ gespeichert.`;
+  });
+
+  function openSettings() {
     const s = state.settings;
+    provEdit = null; $("pName").value = ""; $("pAc").value = ""; $("pDc").value = "";
+    $("btnProvAdd").textContent = "Anbieter hinzufügen";
+    $("provHint").textContent = "Einen der beiden Preise reicht. Beim Erfassen einer Ladung kannst du den Anbieter dann antippen.";
+    renderProvList();
+    setFuel(s.fuel || "benzin");
+    $("sFuelL").value = s.fuelL != null ? fmtIn(s.fuelL, 1) : "";
+    $("sFuelP").value = s.fuelPrice != null ? fmtIn(s.fuelPrice, 2) : "";
+    $("sPlz").value = s.plz || "";
+    showFuelStatus();
     $("sCar").value = s.car || "";
     $("sCap").value = fmtIn(s.cap, 1); $("sLoss").value = fmtIn(s.loss, 0); $("sHome").value = fmtIn(s.homePrice, 2);
     $("storeNote").textContent = "Deine Daten liegen nur auf diesem Gerät. Exportiere ab und zu eine Sicherung.";
     dlgS.showModal();
-  });
+  }
   $("formSettings").addEventListener("submit", async (e) => {
     e.preventDefault();
     const cap = parseNum($("sCap").value), loss = parseNum($("sLoss").value), home = parseNum($("sHome").value);
+    const prev = state.settings;
+    const plz = $("sPlz").value.trim();
     const s = {
+      ...prev,
+      plz: /^\d{5}$/.test(plz) ? plz : "",
       car: $("sCar").value.trim().slice(0, 24),
       cap: cap > 0 ? cap : state.settings.cap,
       loss: loss != null && loss >= 0 && loss < 50 ? loss : state.settings.loss,
       homePrice: home != null && home >= 0 ? home : state.settings.homePrice,
+      fuel: document.querySelector('#fuelSeg button[aria-pressed="true"]').dataset.f,
+      fuelL: (() => { const v = parseNum($("sFuelL").value); return v > 0 ? v : null; })(),
+      fuelPrice: (() => { const v = parseNum($("sFuelP").value); return v > 0 ? v : null; })(),
     };
     try { await saveSettings(s); } catch {}
     dlgS.close();
+    if (s.plz && (s.plz !== prev.plz || s.fuel !== prev.fuel)) refreshFuel(true).catch(() => {});
+  });
+
+  // ---------- Spritpreise online ----------
+  function showFuelStatus(msg) {
+    const s = state.settings, el = $("fuelStatus");
+    if (msg) { el.textContent = msg; return; }
+    const L = s.fuelLast;
+    if (s.plz && L && L.type === s.fuel) {
+      const t = new Date(L.time);
+      el.textContent = `Zuletzt ${f2.format(L.price)} € im Schnitt an ${L.stations} Tankstellen rund um ${L.place || L.plz}, Stand ${t.toLocaleDateString("de-DE")} ${t.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })}. Preise: Tankerkönig (MTS-K), CC BY 4.0.`;
+    } else {
+      el.textContent = "Mit PLZ holt die App täglich den Durchschnittspreis der Tankstellen in der Umgebung. Der Preis oben gilt dann nur noch für Zeiträume ohne Online-Daten.";
+    }
+  }
+  async function refreshFuel(force) {
+    const s = state.settings;
+    if (!s.plz) throw new Error("Trag zuerst eine Postleitzahl ein.");
+    const L = s.fuelLast;
+    if (!force && L && L.type === s.fuel && L.plz === s.plz && Date.now() - new Date(L.time).getTime() < 12 * 3600e3) return;
+    const res = await fetch(`api/sprit?plz=${encodeURIComponent(s.plz)}&type=${API_TYPE[s.fuel] || "e5"}`);
+    let data = null; try { data = await res.json(); } catch {}
+    if (!res.ok || !data || typeof data.price !== "number") throw new Error((data && data.error) || "Spritpreis konnte nicht abgerufen werden.");
+    const hist = { ...(s.fuelHist || {}) };
+    const h = { ...(hist[s.fuel] || {}) };
+    const k = new Date().toISOString().slice(0, 7);
+    const m = h[k] || { sum: 0, n: 0 };
+    h[k] = { sum: m.sum + data.price, n: m.n + 1 };
+    hist[s.fuel] = h;
+    state.settings = { ...s, fuelHist: hist, fuelLast: { price: data.price, time: data.time, place: data.place, stations: data.stations, type: s.fuel, plz: s.plz } };
+    local.saveSet(state.settings);
+    render();
+    if (dlgS.open) showFuelStatus();
+  }
+  $("btnFuelNow").addEventListener("click", async () => {
+    const plz = $("sPlz").value.trim();
+    if (!/^\d{5}$/.test(plz)) { showFuelStatus("Bitte eine fünfstellige Postleitzahl eintragen."); return; }
+    const fuel = document.querySelector('#fuelSeg button[aria-pressed="true"]').dataset.f;
+    state.settings = { ...state.settings, plz, fuel };
+    local.saveSet(state.settings);
+    const b = $("btnFuelNow"); b.disabled = true; showFuelStatus("Frage Preise ab …");
+    try { await refreshFuel(true); } catch (e) { showFuelStatus(e.message); }
+    finally { b.disabled = false; }
   });
 
   document.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", () => b.closest("dialog").close()));
@@ -599,17 +1069,19 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     document.querySelectorAll(".periods button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
     render();
   }));
-  $("btnAdd").addEventListener("click", () => openCharge(null));
+  const openOne = () => state.charges.find((c) => c.open) || null;
+  $("btnAdd").addEventListener("click", () => openCharge(openOne()));
+  $("openCard").addEventListener("click", () => openCharge(openOne()));
 
   // ---------- Export ----------
   function toCsv() {
     const s = state.settings;
-    const head = ["Zeitpunkt","Ladeart","Kilometerstand","Akku vorher %","Akku nachher %","kWh","kWh geschätzt","Preis pro kWh","Kosten","Notiz"];
+    const head = ["Zeitpunkt","Ladeart","Kilometerstand","Akku vorher %","Akku nachher %","kWh","kWh geschätzt","Preis pro kWh","Kosten","Notiz","Anbieter"];
     const esc = (v) => { const t = v == null ? "" : String(v); return /[;"\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
     const num = (v, d) => v == null || !isFinite(v) ? "" : v.toFixed(d).replace(".", ",");
-    const lines = [...state.charges].sort(sortAsc).map((c) => {
+    const lines = state.charges.filter((c) => !c.open).sort(sortAsc).map((c) => {
       const d = derive(c, s);
-      return [c.ts.replace("T", " "), TYPE_LABEL[c.type], c.odo, c.soc0, c.soc1, num(d.paid, 2), d.estimated ? "ja" : "nein", num(c.price, 3), num(d.cost, 2), c.note].map(esc).join(";");
+      return [c.ts.replace("T", " "), TYPE_LABEL[c.type], c.odo, c.soc0, c.soc1, num(d.paid, 2), d.estimated ? "ja" : "nein", num(c.price, 3), num(d.cost, 2), c.note, c.provider || ""].map(esc).join(";");
     });
     return "\uFEFF" + head.join(";") + "\n" + lines.join("\n");
   }
@@ -653,13 +1125,16 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     const existing = new Set(state.charges.map((c) => c.ts + "|" + c.odo));
     const added = [];
     for (const line of lines.slice(1)) {
-      const [ts, type, odo, s0, s1, kwh, est, price, cost, note] = splitRow(line);
+      const [ts, type, odo, s0, s1, kwh, est, price, cost, note, provName] = splitRow(line);
       const c = {
         id: newId(), ts: ts.trim().replace(" ", "T").slice(0, 16), type: typeOf(type),
         odo: parseNum(odo), soc0: parseNum(s0), soc1: parseNum(s1),
         kwh: est === "ja" ? null : parseNum(kwh), price: parseNum(price), total: null, note: note || "",
       };
-      if (!c.ts || [c.odo, c.soc0, c.soc1].some((v) => v == null || isNaN(v))) continue;
+      if (provName) { c.provider = provName; const pm = provs().find((p) => p.name === provName); if (pm) c.providerId = pm.id; }
+      if (!c.ts || c.odo == null || isNaN(c.odo)) continue;
+      if (c.soc0 != null && isNaN(c.soc0)) c.soc0 = null;
+      if (c.soc1 != null && isNaN(c.soc1)) c.soc1 = null;
       if (c.kwh != null && isNaN(c.kwh)) c.kwh = null;
       if (c.price != null && isNaN(c.price)) c.price = null;
       const k = parseNum(cost);
@@ -676,6 +1151,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     alert(added.length ? `${added.length} Ladung${added.length === 1 ? "" : "en"} importiert.` : "Keine neuen Ladungen in der Datei gefunden.");
   });
 
+  if (state.settings.plz) refreshFuel(false).catch(() => {});
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
   if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 })();
