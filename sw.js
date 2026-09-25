@@ -1,4 +1,4 @@
-const CACHE = "c10-ladelog-v10";
+const CACHE = "c10-ladelog-v12";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {

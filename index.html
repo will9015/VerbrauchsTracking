@@ -141,19 +141,35 @@ h2 small{font-weight:400; color:var(--mute); font-size:13px}
 .prov-main span{font-size:13px; color:var(--mute)}
 .prov-x{border:0; background:var(--soft); border-radius:999px; padding:6px 12px; font-size:13px}
 .h4{margin:26px 0 10px; font-size:15px; font-weight:600}
-.welcome{position:fixed; inset:0; z-index:50; background:var(--bg); overflow-y:auto;
-  padding:calc(28px + env(safe-area-inset-top,0px)) 0 calc(28px + env(safe-area-inset-bottom,0px))}
-.welcome-in{max-width:480px; margin:0 auto; padding:0 24px; min-height:100%; display:flex; flex-direction:column}
-.welcome-top{display:flex; justify-content:space-between; align-items:center}
-.welcome h1{font-size:clamp(40px, 12vw, 56px); font-weight:600; letter-spacing:-0.045em; line-height:.95; margin:28px 0 14px}
-.welcome .lead{color:var(--mute); font-size:16px; margin:0 0 30px; max-width:34ch}
-.welcome .grid{gap:16px}
-.welcome .imp{display:flex; gap:10px; margin-top:8px; font-size:13px; line-height:1.4}
-.welcome .imp b{flex:none; width:18px; height:18px; border-radius:50%; background:var(--fg); color:var(--bg); font-size:12px; display:grid; place-items:center; margin-top:1px}
-.welcome .later{margin:26px 0 0; font-size:14px; color:var(--mute); display:flex; gap:8px; align-items:flex-start}
-.welcome .later svg{width:18px; height:18px; flex:none; margin-top:1px; color:var(--fg)}
-.welcome-actions{margin-top:auto; padding-top:28px}
-.skip{display:block; width:100%; margin-top:6px; border:0; background:transparent; padding:14px; font-size:16px; color:var(--mute)}
+/* Einrichtung (geführt) */
+:root{--hl:#ffe3c7; --hl-line:#f3a65f; --hl-ink:#1a1a1a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--hl:#5a3a1c; --hl-line:#f3a65f; --hl-ink:#fff}}
+:root[data-theme="dark"]{--hl:#5a3a1c; --hl-ink:#fff}
+.sheet{position:relative}
+#dlgSettings.guide{max-height:100vh; max-height:100dvh; height:100dvh; border-radius:0}
+#dlgSettings.guide .sheet{padding-bottom:320px}
+#dlgSettings.guide .sheet > *:not(.guide-keep):not(.guide-on):not(.gtip),
+#dlgSettings.guide .grid > *:not(.guide-on){opacity:.14; pointer-events:none; transition:opacity .25s}
+#dlgSettings.guide .close{visibility:hidden}
+.guide-on{position:relative; border-radius:14px; background:var(--hl); box-shadow:0 0 0 10px var(--hl), 0 0 0 11.5px var(--hl-line); transition:box-shadow .25s}
+.guide-on .hint{color:var(--hl-ink); opacity:.8}
+.gtip{position:absolute; left:16px; right:16px; z-index:5; background:var(--hl); color:var(--hl-ink); border:1.5px solid var(--hl-line); border-radius:16px; padding:16px 16px 12px; box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.gtip::before{content:""; position:absolute; top:-8px; left:32px; width:14px; height:14px; background:var(--hl); border-left:1.5px solid var(--hl-line); border-top:1.5px solid var(--hl-line); transform:rotate(45deg)}
+.gtip-step{font-size:12px; opacity:.7; margin-bottom:4px}
+.gtip-t{font-weight:600; font-size:17px; letter-spacing:-0.01em; margin-bottom:4px}
+.gtip-x{font-size:14px; line-height:1.45}
+.gtip-row{display:flex; justify-content:space-between; align-items:center; margin-top:12px; gap:8px}
+.gtip-skip{border:0; background:transparent; color:inherit; opacity:.75; font-size:14px; padding:8px 0; text-decoration:underline; text-underline-offset:3px}
+.gtip-nav{display:flex; gap:6px}
+.gtip-back{border:1px solid var(--hl-line); background:transparent; color:inherit; border-radius:999px; padding:8px 14px; font-size:14px}
+.gtip-next{border:0; background:#000; color:#fff; border-radius:999px; padding:9px 18px; font-size:15px; font-weight:600}
+.danger-zone{margin-top:34px; padding-top:20px; border-top:1px solid var(--line)}
+.btn-danger{width:100%; border:1.5px solid var(--fg); background:transparent; border-radius:14px; padding:14px; font-size:15px; font-weight:600}
+.small-dlg{max-width:420px; margin:auto; border-radius:22px}
+.small-dlg .sheet{padding:24px}
+.small-dlg h3{margin:0 0 10px; font-size:21px; font-weight:600; letter-spacing:-0.02em}
+.small-dlg p{margin:0 0 8px; color:var(--mute); font-size:15px}
+.small-dlg p b{color:var(--fg); font-weight:500}
 .fab{position:fixed; left:50%; transform:translateX(-50%); bottom:0; margin-bottom:calc(20px + env(safe-area-inset-bottom,0px));
   border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:16px 26px; font-weight:600; font-size:16px;
   display:flex; gap:10px; align-items:center; white-space:nowrap; box-shadow:0 0 0 6px var(--bg)}
@@ -273,31 +289,6 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   <span id="fabLabel">Ladung erfassen</span>
 </button>
 
-<!-- Willkommen -->
-<div class="welcome hidden" id="welcome" role="dialog" aria-modal="true" aria-labelledby="wTitle">
-  <form class="welcome-in" id="formWelcome" novalidate>
-    <div class="welcome-top"><div class="brand">Ladelog</div><button type="button" class="close" id="wSkipTop">Überspringen</button></div>
-    <h1 id="wTitle">Kurz einrichten.</h1>
-    <p class="lead">Drei Angaben, dann kannst du loslegen. Du kannst diesen Schritt auch überspringen.</p>
-    <div class="grid">
-      <label class="field full"><span>Fahrzeug (optional)</span><input id="wCar" placeholder="z. B. C10 oder Ioniq 5" maxlength="24" autocomplete="off"></label>
-      <label class="field full"><span>Nutzbare Akkukapazität in kWh</span><input id="wCap" inputmode="decimal" placeholder="z. B. 69" autocomplete="off">
-        <div class="imp"><b>!</b><span>Wichtig für genaue Werte: Die App rechnet damit Akkuprozente in kWh um. Du findest den Wert im Datenblatt deines Autos als „nutzbare“ oder „Netto“-Kapazität. Ohne Angabe rechnet sie mit 69 kWh.</span></div></label>
-      <label class="field full"><span>Strompreis zuhause pro kWh (optional)</span><input id="wHome" inputmode="decimal" placeholder="z. B. 0,35" autocomplete="off">
-        <div class="hint">Wird beim Laden zuhause automatisch vorausgefüllt.</div></label>
-    </div>
-    <p class="later">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
-      <span>Alles lässt sich später jederzeit in den Einstellungen nachtragen oder ändern, oben rechts über dieses Symbol.</span>
-    </p>
-    <div class="err" id="wErr" role="alert"></div>
-    <div class="welcome-actions">
-      <button type="submit" class="primary">Speichern und loslegen</button>
-      <button type="button" class="skip" id="wSkip">Überspringen</button>
-    </div>
-  </form>
-</div>
-
 <!-- Ladung -->
 <dialog id="dlgCharge" aria-labelledby="chargeTitle">
   <form class="sheet" id="formCharge" method="dialog" novalidate>
@@ -338,23 +329,24 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 <!-- Einstellungen -->
 <dialog id="dlgSettings" aria-labelledby="setTitle">
   <form class="sheet" id="formSettings" method="dialog" novalidate>
-    <div class="sheet-h"><h3 id="setTitle">Einstellungen</h3><button type="button" class="close" data-close>Schließen</button></div>
+    <div class="sheet-h guide-keep"><h3 id="setTitle">Einstellungen</h3><button type="button" class="close" data-close>Schließen</button></div>
     <div class="grid">
-      <label class="field full"><span>Fahrzeug</span><input id="sCar" placeholder="z. B. C10 oder Ioniq 5" autocomplete="off" maxlength="24">
+      <label class="field full"><span>Dein Fahrzeugname</span><input id="sCar" placeholder="z. B. C10 oder Ioniq 5" autocomplete="off" maxlength="24">
         <div class="hint">Erscheint oben in der App.</div></label>
-      <label class="field full"><span>Nutzbare Akkukapazität (kWh)</span><input id="sCap" inputmode="decimal">
-        <div class="hint">Wird genutzt, um aus den Prozentwerten kWh zu berechnen.</div></label>
-      <label class="field"><span>Ladeverlust %</span><input id="sLoss" inputmode="decimal">
-        <div class="hint">Nur für Schätzungen ohne kWh-Angabe.</div></label>
-      <label class="field"><span>Strompreis zuhause</span><input id="sHome" inputmode="decimal">
-        <div class="hint">Wird bei „Zuhause“ vorausgefüllt.</div></label>
+      <label class="field full"><span>Nutzbare Akkukapazität deines Fahrzeugs (kWh)</span><input id="sCap" inputmode="decimal">
+        <div class="hint">Wichtig: Damit rechnet die App Akkuprozente in kWh um. Steht im Datenblatt als „nutzbare“ oder „Netto“-Kapazität.</div></label>
+      <label class="field full"><span>Strompreis zuhause (€/kWh)</span><input id="sHome" inputmode="decimal" placeholder="z. B. 0,35">
+        <div class="hint">Wird beim Laden zuhause automatisch vorausgefüllt.</div></label>
+      <label class="field full"><span>Ladeverlust (%)</span><input id="sLoss" inputmode="decimal">
+        <div class="hint">Kannst du auf 10 % lassen, das passt für die meisten Autos. Beim Laden geht etwas Strom als Wärme verloren; der Wert wird nur genutzt, wenn du bei einer Ladung keine kWh einträgst.</div></label>
     </div>
-    <h4 class="h4">Ladeanbieter</h4>
+    <h4 class="h4" style="margin-bottom:4px">Ladeanbieter hinzufügen</h4>
+    <p class="hint" style="margin:0 0 12px">Trag hier deine Ladeanbieter mit Name und Preis ein, z. B. EWE Go mit 0,44 €/kWh. Beim Erfassen einer Ladung wählst du den Anbieter dann einfach aus, statt den Preis jedes Mal einzutippen.</p>
     <div id="provList"></div>
     <div class="grid" style="margin-top:12px">
       <label class="field full"><span>Name</span><input id="pName" placeholder="z. B. EWE Go" autocomplete="off" maxlength="30"></label>
-      <label class="field"><span>AC-Preis pro kWh</span><input id="pAc" inputmode="decimal" placeholder="z. B. 0,44" autocomplete="off"></label>
-      <label class="field"><span>DC-Preis pro kWh</span><input id="pDc" inputmode="decimal" placeholder="z. B. 0,54" autocomplete="off"></label>
+      <label class="field"><span>AC-Preis (€/kWh)</span><input id="pAc" inputmode="decimal" placeholder="z. B. 0,44" autocomplete="off"></label>
+      <label class="field"><span>DC-Preis (€/kWh)</span><input id="pDc" inputmode="decimal" placeholder="z. B. 0,54" autocomplete="off"></label>
       <div class="hint" id="provHint" style="grid-column:1/-1; margin-top:-4px">Einen der beiden Preise reicht. Beim Erfassen einer Ladung kannst du den Anbieter dann antippen.</div>
     </div>
     <button type="button" class="link" id="btnProvAdd">Anbieter hinzufügen</button>
@@ -366,10 +358,11 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     </div>
     <div class="grid">
       <label class="field"><span>Verbrauch l/100 km</span><input id="sFuelL" inputmode="decimal" placeholder="z. B. 6,5" autocomplete="off"></label>
-      <label class="field"><span>Preis pro Liter</span><input id="sFuelP" inputmode="decimal" placeholder="z. B. 1,75" autocomplete="off"></label>
+      <label class="field"><span>Preis (€/Liter)</span><input id="sFuelP" inputmode="decimal" placeholder="z. B. 1,75" autocomplete="off"></label>
       <div class="hint" style="grid-column:1/-1; margin-top:-4px">Verbrauch zum Beispiel vom vorherigen Auto. Leer lassen, um den Vergleich auszublenden.</div>
-      <label class="field full"><span>Postleitzahl für aktuelle Spritpreise (optional)</span><input id="sPlz" inputmode="numeric" maxlength="5" placeholder="z. B. 01067" autocomplete="postal-code">
-        <div class="hint" id="fuelStatus">Mit PLZ holt die App täglich den Durchschnittspreis der Tankstellen in der Umgebung. Der Preis oben gilt dann nur noch für Zeiträume ohne Online-Daten.</div></label>
+      <label class="field full"><span>Postleitzahl für automatische Spritpreise (optional)</span><input id="sPlz" inputmode="numeric" maxlength="5" placeholder="z. B. 01067" autocomplete="postal-code">
+        <div class="hint">Mit Postleitzahl holt die App die aktuellen Spritpreise automatisch: bei jedem Start, höchstens alle 12 Stunden. Genommen wird der Durchschnitt der Tankstellen in deiner Umgebung. Den Literpreis oben musst du dann nicht mehr pflegen.</div>
+        <div class="hint" id="fuelStatus" style="color:var(--fg)"></div></label>
     </div>
     <button type="button" class="link" id="btnFuelNow">Spritpreis jetzt abrufen</button>
     <button type="submit" class="primary">Einstellungen speichern</button>
@@ -377,7 +370,30 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     <button type="button" class="link" id="btnImport">Sicherung importieren</button>
     <input type="file" id="fileImport" accept=".csv,text/csv" class="hidden">
     <p class="store-note" id="storeNote"></p>
+    <div class="danger-zone">
+      <button type="button" class="btn-danger" id="btnReset">Alle Daten zurücksetzen</button>
+    </div>
+    <div class="gtip hidden" id="gtip" role="dialog" aria-live="polite">
+      <div class="gtip-step" id="gtStep"></div>
+      <div class="gtip-t" id="gtTitle"></div>
+      <div class="gtip-x" id="gtText"></div>
+      <div class="gtip-row">
+        <button type="button" class="gtip-skip" id="gtSkip">Einrichtung überspringen</button>
+        <div class="gtip-nav"><button type="button" class="gtip-back" id="gtBack">Zurück</button><button type="button" class="gtip-next" id="gtNext">Weiter</button></div>
+      </div>
+    </div>
   </form>
+</dialog>
+
+<!-- Zurücksetzen -->
+<dialog id="dlgReset" class="small-dlg" aria-labelledby="rTitle">
+  <div class="sheet">
+    <h3 id="rTitle"></h3>
+    <div id="rText"></div>
+    <button type="button" class="primary" id="rPrimary"></button>
+    <button type="button" class="secondary" id="rSecondary"></button>
+    <button type="button" class="danger" id="rCancel" style="text-decoration:none">Abbrechen</button>
+  </div>
 </dialog>
 
 <script>
@@ -1066,7 +1082,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       const t = new Date(L.time);
       el.textContent = `Zuletzt ${f2.format(L.price)} € im Schnitt an ${L.stations} Tankstellen rund um ${L.place || L.plz}, Stand ${t.toLocaleDateString("de-DE")} ${t.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })}. Preise: Tankerkönig (MTS-K), CC BY 4.0.`;
     } else {
-      el.textContent = "Mit PLZ holt die App täglich den Durchschnittspreis der Tankstellen in der Umgebung. Der Preis oben gilt dann nur noch für Zeiträume ohne Online-Daten.";
+      el.textContent = "";
     }
   }
   async function refreshFuel(force) {
@@ -1129,47 +1145,110 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   const ls = local.loadSet(); if (ls) state.settings = { ...state.settings, ...ls };
   render();
 
-  // ---------- Willkommen beim ersten Start ----------
-  function finishWelcome(patch) {
-    state.settings = { ...state.settings, ...patch, onboarded: true };
-    local.saveSet(state.settings);
-    $("welcome").classList.add("hidden");
-    document.body.style.overflow = "";
-    render();
-  }
-  if (!state.settings.onboarded && !state.charges.length && !(ls && (ls.car || ls.fuelL || (ls.providers || []).length))) {
-    $("welcome").classList.remove("hidden");
-    document.body.style.overflow = "hidden";
-  } else if (!state.settings.onboarded) {
-    state.settings.onboarded = true; local.saveSet(state.settings);
-  }
-  $("formWelcome").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const car = $("wCar").value.trim().slice(0, 24);
-    const cap = parseNum($("wCap").value), home = parseNum($("wHome").value);
-    if (cap != null && (isNaN(cap) || cap < 10 || cap > 250)) { $("wErr").textContent = "Bitte die Akkukapazität in kWh eintragen, z. B. 69."; $("wCap").focus(); return; }
-    if (home != null && (isNaN(home) || home < 0 || home > 3)) { $("wErr").textContent = "Bitte den Strompreis in Euro pro kWh eintragen, z. B. 0,35."; $("wHome").focus(); return; }
-    const patch = { car };
-    if (cap != null) patch.cap = cap;
-    if (home != null) patch.homePrice = home;
-    finishWelcome(patch);
-  });
-  $("wSkip").addEventListener("click", () => finishWelcome({}));
-  $("wSkipTop").addEventListener("click", () => finishWelcome({}));
-
   // ---------- Sicherung ----------
-  $("btnExport").addEventListener("click", async () => {
+  $("btnExport").addEventListener("click", () => exportBackup());
+  async function exportBackup() {
     const name = `ladelog-${new Date().toISOString().slice(0, 10)}.csv`;
     const blob = new Blob([toCsv()], { type: "text/csv" });
     try {
       const file = new File([blob], name, { type: "text/csv" });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Ladelog" }); return; }
-    } catch (e) { if (e && e.name === "AbortError") return; }
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: "Ladelog" }); return true; }
+    } catch (e) { if (e && e.name === "AbortError") return false; }
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob); a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    return true;
+  }
+
+  // ---------- Zurücksetzen ----------
+  const dlgR = $("dlgReset");
+  function resetStep(step) {
+    const n = state.charges.length;
+    if (step === 1) {
+      $("rTitle").textContent = "Alle Daten zurücksetzen?";
+      $("rText").innerHTML = `<p>Das löscht <b>alle ${n ? n + " " : ""}Ladungen</b>, deine Anbieter und Einstellungen <b>unwiderruflich</b> von diesem Gerät.</p><p>Du kannst deine Ladungen vorher als Sicherung exportieren und später wieder importieren. Möchtest du sie sichern?</p>`;
+      $("rPrimary").textContent = "Erst sichern";
+      $("rSecondary").textContent = "Ohne Sicherung weiter";
+      $("rPrimary").onclick = async () => { const ok = await exportBackup(); resetStep(ok ? 3 : 1); };
+      $("rSecondary").onclick = () => resetStep(2);
+    } else {
+      $("rTitle").textContent = "Wirklich alles zurücksetzen?";
+      $("rText").innerHTML = step === 3
+        ? `<p>Deine Sicherung wurde erstellt. Anbieter und Einstellungen sind darin nicht enthalten, die trägst du danach neu ein.</p><p>Jetzt alles löschen?</p>`
+        : `<p>Ohne Sicherung sind deine Ladungen danach <b>endgültig weg</b>.</p>`;
+      $("rPrimary").textContent = "Ja, alles löschen";
+      $("rSecondary").textContent = step === 3 ? "Doch nicht" : "Doch lieber sichern";
+      $("rPrimary").onclick = () => {
+        try { localStorage.removeItem(LS_KEY); localStorage.removeItem(LS_SET); } catch {}
+        location.reload();
+      };
+      $("rSecondary").onclick = () => (step === 3 ? dlgR.close() : resetStep(1));
+    }
+  }
+  $("btnReset").addEventListener("click", () => { resetStep(1); dlgR.showModal(); });
+  $("rCancel").addEventListener("click", () => dlgR.close());
+
+  // ---------- Geführte Einrichtung beim ersten Start ----------
+  const GUIDE = [
+    { el: () => $("sCar").closest(".field"), title: "Willkommen bei Ladelog", text: "Gib zuerst den Namen deines Fahrzeugs ein, z. B. „C10“. Er erscheint oben in der App und lässt sich später jederzeit ändern." },
+    { el: () => $("sCap").closest(".field"), title: "Akkukapazität", text: "Dieser Wert ist wichtig: Damit berechnet die App aus deinen Akkuprozenten die geladenen kWh und deinen Verbrauch genau. Du findest ihn im Datenblatt als „nutzbare“ oder „Netto“-Kapazität." },
+    { el: () => $("sHome").closest(".field"), title: "Strompreis zuhause", text: "Optional. Trag deinen Preis pro kWh ein, dann ist er beim Laden zuhause schon vorausgefüllt." },
+    { el: () => [$("fuelSeg"), $("sFuelL").closest(".field")], title: "Vergleich mit Verbrenner", text: "Optional. Wähl die Spritsorte und trag den Durchschnittsverbrauch ein, z. B. von deinem vorherigen Auto. So siehst du über längere Zeit, was du mit dem E-Auto konkret sparst." },
+    { el: () => $("sPlz").closest(".field"), title: "Postleitzahl", text: "Optional. Mit deiner PLZ holt die App die aktuellen Spritpreise in deiner Umgebung automatisch, du musst keinen Literpreis pflegen." },
+  ];
+  let gIdx = -1;
+  const gtip = $("gtip");
+  function guideClear() {
+    dlgS.querySelectorAll(".guide-on").forEach((x) => x.classList.remove("guide-on"));
+    dlgS.querySelectorAll(".grid.guide-keep").forEach((x) => x.classList.remove("guide-keep"));
+  }
+  function guideShow(i) {
+    gIdx = i;
+    guideClear();
+    const st = GUIDE[i];
+    const els = [].concat(st.el());
+    els.forEach((x) => { x.classList.add("guide-on"); const g = x.closest(".grid"); if (g) g.classList.add("guide-keep"); });
+    $("gtStep").textContent = `Schritt ${i + 1} von ${GUIDE.length}`;
+    $("gtTitle").textContent = st.title;
+    $("gtText").textContent = st.text;
+    $("gtBack").classList.toggle("hidden", i === 0);
+    $("gtNext").textContent = i === GUIDE.length - 1 ? "Fertig" : "Weiter";
+    const last = els[els.length - 1];
+    const sheet = gtip.parentElement.getBoundingClientRect();
+    gtip.style.top = (last.getBoundingClientRect().bottom - sheet.top + 22) + "px";
+    gtip.classList.remove("hidden");
+    requestAnimationFrame(() => els[0].scrollIntoView({ block: "center", behavior: "smooth" }));
+  }
+  function guideStart() {
+    openSettings();
+    dlgS.classList.add("guide");
+    $("setTitle").textContent = "Einrichtung";
+    requestAnimationFrame(() => guideShow(0));
+  }
+  function guideEnd() {
+    if (gIdx < 0) return;
+    gIdx = -1;
+    guideClear();
+    gtip.classList.add("hidden");
+    dlgS.classList.remove("guide");
+    $("setTitle").textContent = "Einstellungen";
+    state.settings = { ...state.settings, onboarded: true };
+    local.saveSet(state.settings);
+  }
+  $("gtNext").addEventListener("click", () => {
+    if (gIdx < GUIDE.length - 1) guideShow(gIdx + 1);
+    else $("formSettings").requestSubmit();
   });
+  $("gtBack").addEventListener("click", () => gIdx > 0 && guideShow(gIdx - 1));
+  $("gtSkip").addEventListener("click", () => $("formSettings").requestSubmit());
+  dlgS.addEventListener("close", guideEnd);
+
+  if (!state.settings.onboarded) {
+    const hasData = state.charges.length || (ls && (ls.car || ls.fuelL || (ls.providers || []).length));
+    if (hasData) { state.settings.onboarded = true; local.saveSet(state.settings); }
+    else guideStart();
+  }
 
   $("btnImport").addEventListener("click", () => $("fileImport").click());
   $("fileImport").addEventListener("change", async (e) => {
