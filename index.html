@@ -141,6 +141,19 @@ h2 small{font-weight:400; color:var(--mute); font-size:13px}
 .prov-main span{font-size:13px; color:var(--mute)}
 .prov-x{border:0; background:var(--soft); border-radius:999px; padding:6px 12px; font-size:13px}
 .h4{margin:26px 0 10px; font-size:15px; font-weight:600}
+.welcome{position:fixed; inset:0; z-index:50; background:var(--bg); overflow-y:auto;
+  padding:calc(28px + env(safe-area-inset-top,0px)) 0 calc(28px + env(safe-area-inset-bottom,0px))}
+.welcome-in{max-width:480px; margin:0 auto; padding:0 24px; min-height:100%; display:flex; flex-direction:column}
+.welcome-top{display:flex; justify-content:space-between; align-items:center}
+.welcome h1{font-size:clamp(40px, 12vw, 56px); font-weight:600; letter-spacing:-0.045em; line-height:.95; margin:28px 0 14px}
+.welcome .lead{color:var(--mute); font-size:16px; margin:0 0 30px; max-width:34ch}
+.welcome .grid{gap:16px}
+.welcome .imp{display:flex; gap:10px; margin-top:8px; font-size:13px; line-height:1.4}
+.welcome .imp b{flex:none; width:18px; height:18px; border-radius:50%; background:var(--fg); color:var(--bg); font-size:12px; display:grid; place-items:center; margin-top:1px}
+.welcome .later{margin:26px 0 0; font-size:14px; color:var(--mute); display:flex; gap:8px; align-items:flex-start}
+.welcome .later svg{width:18px; height:18px; flex:none; margin-top:1px; color:var(--fg)}
+.welcome-actions{margin-top:auto; padding-top:28px}
+.skip{display:block; width:100%; margin-top:6px; border:0; background:transparent; padding:14px; font-size:16px; color:var(--mute)}
 .fab{position:fixed; left:50%; transform:translateX(-50%); bottom:0; margin-bottom:calc(20px + env(safe-area-inset-bottom,0px));
   border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:16px 26px; font-weight:600; font-size:16px;
   display:flex; gap:10px; align-items:center; white-space:nowrap; box-shadow:0 0 0 6px var(--bg)}
@@ -259,6 +272,31 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   <svg id="fabIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
   <span id="fabLabel">Ladung erfassen</span>
 </button>
+
+<!-- Willkommen -->
+<div class="welcome hidden" id="welcome" role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <form class="welcome-in" id="formWelcome" novalidate>
+    <div class="welcome-top"><div class="brand">Ladelog</div><button type="button" class="close" id="wSkipTop">Überspringen</button></div>
+    <h1 id="wTitle">Kurz einrichten.</h1>
+    <p class="lead">Drei Angaben, dann kannst du loslegen. Du kannst diesen Schritt auch überspringen.</p>
+    <div class="grid">
+      <label class="field full"><span>Fahrzeug (optional)</span><input id="wCar" placeholder="z. B. C10 oder Ioniq 5" maxlength="24" autocomplete="off"></label>
+      <label class="field full"><span>Nutzbare Akkukapazität in kWh</span><input id="wCap" inputmode="decimal" placeholder="z. B. 69" autocomplete="off">
+        <div class="imp"><b>!</b><span>Wichtig für genaue Werte: Die App rechnet damit Akkuprozente in kWh um. Du findest den Wert im Datenblatt deines Autos als „nutzbare“ oder „Netto“-Kapazität. Ohne Angabe rechnet sie mit 69 kWh.</span></div></label>
+      <label class="field full"><span>Strompreis zuhause pro kWh (optional)</span><input id="wHome" inputmode="decimal" placeholder="z. B. 0,35" autocomplete="off">
+        <div class="hint">Wird beim Laden zuhause automatisch vorausgefüllt.</div></label>
+    </div>
+    <p class="later">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+      <span>Alles lässt sich später jederzeit in den Einstellungen nachtragen oder ändern, oben rechts über dieses Symbol.</span>
+    </p>
+    <div class="err" id="wErr" role="alert"></div>
+    <div class="welcome-actions">
+      <button type="submit" class="primary">Speichern und loslegen</button>
+      <button type="button" class="skip" id="wSkip">Überspringen</button>
+    </div>
+  </form>
+</div>
 
 <!-- Ladung -->
 <dialog id="dlgCharge" aria-labelledby="chargeTitle">
@@ -1090,6 +1128,34 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   state.charges = local.load();
   const ls = local.loadSet(); if (ls) state.settings = { ...state.settings, ...ls };
   render();
+
+  // ---------- Willkommen beim ersten Start ----------
+  function finishWelcome(patch) {
+    state.settings = { ...state.settings, ...patch, onboarded: true };
+    local.saveSet(state.settings);
+    $("welcome").classList.add("hidden");
+    document.body.style.overflow = "";
+    render();
+  }
+  if (!state.settings.onboarded && !state.charges.length && !(ls && (ls.car || ls.fuelL || (ls.providers || []).length))) {
+    $("welcome").classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  } else if (!state.settings.onboarded) {
+    state.settings.onboarded = true; local.saveSet(state.settings);
+  }
+  $("formWelcome").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const car = $("wCar").value.trim().slice(0, 24);
+    const cap = parseNum($("wCap").value), home = parseNum($("wHome").value);
+    if (cap != null && (isNaN(cap) || cap < 10 || cap > 250)) { $("wErr").textContent = "Bitte die Akkukapazität in kWh eintragen, z. B. 69."; $("wCap").focus(); return; }
+    if (home != null && (isNaN(home) || home < 0 || home > 3)) { $("wErr").textContent = "Bitte den Strompreis in Euro pro kWh eintragen, z. B. 0,35."; $("wHome").focus(); return; }
+    const patch = { car };
+    if (cap != null) patch.cap = cap;
+    if (home != null) patch.homePrice = home;
+    finishWelcome(patch);
+  });
+  $("wSkip").addEventListener("click", () => finishWelcome({}));
+  $("wSkipTop").addEventListener("click", () => finishWelcome({}));
 
   // ---------- Sicherung ----------
   $("btnExport").addEventListener("click", async () => {
