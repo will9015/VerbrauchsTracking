@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f0e7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#191715" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,7 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#ffffff; --fg:#000000; --mute:#707070; --line:#e6e6e6; --soft:#f3f3f3; --bar2:#c4c4c4;
+  --bg:#f6f0e7; --card:#fffdf9; --fg:#1c1a18; --mute:#5f5a52; --line:#ebe4d9; --soft:#f0e9de; --bar2:#ddd5c9; --home:#4b4743; --ac:#8fb0e8; --dc:#f6bf8f; --accent:#eeb27c; --accent-ink:#3b2a17; --tip:#fbeee0; --tip-ink:#3b2a17; --ac-soft:#e3ecfb; --ac-ink:#2a4677; --grain:.13; --grain-blend:multiply;
   --font:"Schibsted Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
@@ -27,82 +27,106 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#000000; --fg:#ffffff; --mute:#8f8f8f; --line:#232323; --soft:#121212; --bar2:#4a4a4a; color-scheme:dark;
+    --bg:#191715; --card:#23201d; --fg:#f3eee6; --mute:#a59d92; --line:#35302a; --soft:#2c2824; --bar2:#4d473f; --home:#d8d0c4; --ac:#8fb0e8; --dc:#eeb27c; --accent:#e9ad78; --accent-ink:#2a1d0f; --tip:#3a2d20; --tip-ink:#f3e2cf; --ac-soft:#26324a; --ac-ink:#bcd0f4; --grain:.09; --grain-blend:screen; color-scheme:dark;
   }
 }
-:root[data-theme="dark"]{--bg:#000000; --fg:#ffffff; --mute:#8f8f8f; --line:#232323; --soft:#121212; --bar2:#4a4a4a; color-scheme:dark;}
+:root[data-theme="dark"]{--bg:#191715; --card:#23201d; --fg:#f3eee6; --mute:#a59d92; --line:#35302a; --soft:#2c2824; --bar2:#4d473f; --home:#d8d0c4; --ac:#8fb0e8; --dc:#eeb27c; --accent:#e9ad78; --accent-ink:#2a1d0f; --tip:#3a2d20; --tip-ink:#f3e2cf; --ac-soft:#26324a; --ac-ink:#bcd0f4; --grain:.09; --grain-blend:screen; color-scheme:dark;}
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px); background:var(--bg)}
 body{margin:0; background:var(--bg); color:var(--fg); font-family:var(--font); font-size:16px; line-height:1.45;
   -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;}
+body::after{content:""; position:fixed; inset:0; z-index:40; pointer-events:none; opacity:var(--grain); mix-blend-mode:var(--grain-blend);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.42 0 0 0 0 0.38 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 button,input,select{font:inherit; color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--fg); outline-offset:2px}
 
-.wrap{max-width:520px; margin:0 auto; padding:20px 22px 140px}
+.wrap{max-width:520px; margin:0 auto; padding:20px 18px 140px}
 
 header{display:flex; justify-content:space-between; align-items:center; height:44px}
-.brand{font-weight:700; font-size:17px; letter-spacing:-0.01em}
+.brand{font-weight:700; font-size:18px; letter-spacing:-0.01em; display:flex; align-items:center; gap:10px}
+.logo{width:34px; height:34px; border-radius:10px; background:var(--accent); display:grid; place-items:center; flex:none}
+.logo svg{width:18px; height:18px; fill:var(--accent-ink)}
 .brand span{color:var(--mute); font-weight:500}
 .brand .car{color:var(--fg); font-weight:700}
 .brand .car:empty{display:none}
-.icon-btn{width:40px; height:40px; border:0; background:transparent; display:grid; place-items:center; border-radius:50%; margin-right:-8px}
-.icon-btn svg{width:22px; height:22px}
+.icon-btn{width:44px; height:44px; border:1px solid var(--line); background:var(--card); display:grid; place-items:center; border-radius:50%}
+.icon-btn svg{width:20px; height:20px}
 
-.periods{display:flex; gap:4px; margin:28px 0 0; padding:3px; background:var(--soft); border-radius:999px; width:max-content}
+.periods{display:flex; gap:4px; margin:20px 0 0; padding:3px; background:var(--card); border:1px solid var(--line); border-radius:999px; width:max-content}
 .periods button{border:0; background:transparent; padding:6px 14px; border-radius:999px; font-size:14px; color:var(--mute)}
 .periods button[aria-pressed="true"]{background:var(--fg); color:var(--bg)}
 
-.hero{margin:34px 0 8px}
-.hero-num{font-size:clamp(84px, 30vw, 148px); font-weight:600; letter-spacing:-0.055em; line-height:.86; margin-left:-0.04em}
-.hero-num.empty{color:var(--line)}
-.hero-cap{margin-top:14px; color:var(--mute); font-size:15px}
-.hero-cap b{color:var(--fg); font-weight:500}
-
-.stats{display:grid; grid-template-columns:repeat(3,1fr); margin:34px 0 0; border-top:1px solid var(--fg)}
-.stat{padding:14px 0 0}
-.stat + .stat{padding-left:14px; border-left:1px solid var(--line)}
-.stat-v{font-size:24px; font-weight:600; letter-spacing:-0.02em}
-.stat-l{font-size:13px; color:var(--mute); line-height:1.3; margin-top:2px}
-
-section{margin-top:52px}
-h2{font-size:15px; font-weight:600; margin:0 0 16px; display:flex; justify-content:space-between; align-items:baseline}
-h2 small{font-weight:400; color:var(--mute); font-size:13px}
+.tiles2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:16px}
+.tiles3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:12px}
+.tile{background:var(--card); border:1px solid var(--line); border-radius:20px; padding:16px; min-width:0}
+.tile-l{font-size:12px; color:var(--mute); line-height:1.3}
+.tile-v{font-size:clamp(28px, 9vw, 36px); font-weight:600; letter-spacing:-0.04em; line-height:1.1; margin-top:6px; white-space:nowrap}
+.tile-v.empty{color:var(--bar2)}
+.tile-s{font-size:12px; color:var(--mute); margin-top:8px; line-height:1.35}
+.tile-s b{color:var(--fg); font-weight:500}
+.tile.accent{background:var(--accent); border-color:transparent; color:var(--accent-ink)}
+.tile.accent .tile-l,.tile.accent .tile-s{color:var(--accent-ink); opacity:.85}
+.tile.accent .tile-v.empty{color:var(--accent-ink); opacity:.45}
+.tile.accent button{margin-top:10px; border:0; background:var(--accent-ink); color:var(--accent); border-radius:999px; padding:7px 12px; font-size:13px; font-weight:600}
+.tiles3 .tile{padding:12px; border-radius:18px}
+.tiles3 .tile-v{font-size:21px; letter-spacing:-0.02em; margin-top:4px}
+.tiles3 .tile-s{margin-top:2px; font-size:11px}
+.tiles3 .tile-l{font-size:11px}
+section{margin-top:12px; background:var(--card); border:1px solid var(--line); border-radius:22px; padding:18px}
+section.plain{background:transparent; border:0; padding:18px 2px 0}
+h2{font-size:15px; font-weight:600; margin:0 0 14px; display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+h2 small{font-weight:400; color:var(--mute); font-size:12px}
 
 .chart svg{display:block; width:100%; height:auto}
+.chart .mcol{cursor:pointer; transition:opacity .15s; outline:none}
+.chart.sel .mcol{opacity:.35}
+.chart.sel .mcol.on{opacity:1}
+.bar-detail{margin-top:10px; padding:10px 12px; border-radius:12px; background:var(--soft); font-size:13px; color:var(--mute); min-height:40px; display:flex; flex-wrap:wrap; gap:4px 12px; align-items:center}
+.bar-detail b{color:var(--fg); font-weight:600}
+.bar-detail .bd-t{display:inline-flex; align-items:center; gap:6px}
+.bar-detail .bd-t i{width:8px; height:8px; border-radius:2px; display:inline-block}
 .legend{display:flex; gap:18px; font-size:13px; color:var(--mute); margin-top:12px}
 .legend i{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:6px; vertical-align:0}
 
-.save-num{font-size:clamp(44px, 14vw, 64px); font-weight:600; letter-spacing:-0.04em; line-height:1}
-.save-num.neg{color:var(--mute)}
-.save-cap{color:var(--mute); font-size:14px; margin-top:8px; max-width:40ch}
+.vs{display:flex; flex-direction:column; gap:12px}
+.vs-row{display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px}
+.vs-row b{font-weight:600}
+.vs-track{height:14px; border-radius:7px; background:var(--soft); overflow:hidden}
+.vs-track i{display:block; height:100%; border-radius:7px}
+.save-cap{color:var(--mute); font-size:13px; margin-top:12px}
 .save-cap b{color:var(--fg); font-weight:500}
-.save-chart{margin-top:22px}
+.save-chart{margin-top:16px}
 .save-chart svg{display:block; width:100%; height:auto}
 .save-empty{background:var(--soft); border-radius:14px; padding:18px; font-size:14px; color:var(--mute)}
 .save-empty button{margin-top:12px; border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:8px 16px; font-size:14px}
-.mixbar{display:flex; height:12px; border-radius:6px; overflow:hidden; gap:2px; margin-bottom:6px}
-.mixbar i{display:block; height:100%}
-.sw-home{background:var(--fg)}
-.sw-ac{background:var(--bar2)}
-.sw-dc{background:repeating-linear-gradient(135deg, var(--fg) 0 2px, transparent 2px 5px); box-shadow:inset 0 0 0 1px var(--fg)}
-.mixrow{display:grid; grid-template-columns:14px 1fr auto; gap:12px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line)}
-.mixrow .sw{width:14px; height:14px; border-radius:3px}
-.mix-n{font-weight:500}
-.mix-s{font-size:13px; color:var(--mute)}
-.mix-p{text-align:right; font-weight:600; font-size:18px; letter-spacing:-0.01em}
+.mix-top{display:flex; gap:16px; align-items:center}
+.donut{width:118px; height:118px; flex:none}
+.mix-rows{flex:1; min-width:0}
+.sw-home{background:var(--home)}
+.sw-ac{background:var(--ac)}
+.sw-dc{background:var(--dc)}
+.mixrow{display:grid; grid-template-columns:10px 1fr auto; gap:10px; align-items:center; padding:8px 0}
+.mixrow .sw{width:10px; height:10px; border-radius:3px}
+.mix-n{font-weight:500; font-size:14px}
+.mix-s{font-size:11px; color:var(--mute)}
+.mix-p{text-align:right; font-weight:600; font-size:15px; letter-spacing:-0.01em}
 .mix-p small{display:block; font-weight:400; font-size:12px; color:var(--mute); letter-spacing:0}
-.mix-note{font-size:14px; color:var(--mute); margin-top:14px}
+.mix-note{font-size:13px; color:var(--mute); margin:10px 0 0}
 .mix-note b{color:var(--fg); font-weight:500}
+.tip{margin-top:14px; padding:12px 14px; border-radius:14px; background:var(--tip); color:var(--tip-ink); font-size:13px}
+.tip b{font-weight:600}
 .compare{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 .cmp{background:var(--soft); border-radius:14px; padding:16px}
 .cmp-v{font-size:22px; font-weight:600; letter-spacing:-0.02em}
 .cmp-l{font-size:13px; color:var(--mute)}
 
-.list{list-style:none; margin:0; padding:0; border-top:1px solid var(--line)}
-.row{display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line);
+.list{list-style:none; margin:0; padding:0}
+.list li:last-child .row{border-bottom:0}
+.row{display:grid; grid-template-columns:6px auto 1fr auto; gap:12px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line);
   width:100%; background:none; border-left:0; border-right:0; border-top:0; text-align:left}
-.date{width:44px; text-align:center; line-height:1.05}
+.strip{width:6px; height:38px; border-radius:3px}
+.date{width:40px; text-align:center; line-height:1.05}
 .date b{display:block; font-size:21px; font-weight:600; letter-spacing:-0.02em}
 .date span{font-size:12px; color:var(--mute)}
 .row-main{min-width:0}
@@ -110,20 +134,20 @@ h2 small{font-weight:400; color:var(--mute); font-size:13px}
 .row-s{font-size:13px; color:var(--mute); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .row-c{font-weight:600; text-align:right}
 .row-c small{display:block; font-weight:400; font-size:12px; color:var(--mute)}
-.empty-state{padding:36px 0; color:var(--mute); border-bottom:1px solid var(--line)}
+.empty-state{padding:20px 0 6px; color:var(--mute)}
 .empty-state b{color:var(--fg); font-weight:600; display:block; margin-bottom:4px}
 .note{font-size:13px; color:var(--mute); margin-top:14px}
 
 .banner{margin-top:24px; padding:14px 16px; border:1px solid var(--fg); border-radius:14px; font-size:14px; display:flex; gap:12px; align-items:center; justify-content:space-between}
 .banner button{border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:7px 14px; font-size:14px; white-space:nowrap}
 
-.open-card{display:flex; align-items:center; gap:14px; width:100%; margin-top:22px; padding:16px; border:1.5px solid var(--fg); border-radius:16px; background:var(--bg); text-align:left}
-.open-dot{width:10px; height:10px; border-radius:50%; background:var(--fg); flex:none; animation:pulse 1.6s ease-in-out infinite}
+.open-card{display:flex; align-items:center; gap:14px; width:100%; margin-top:16px; padding:16px; border:1px solid var(--line); border-radius:20px; background:var(--card); text-align:left}
+.open-dot{width:12px; height:12px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px var(--tip); flex:none; animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.25}}
 @media (prefers-reduced-motion: reduce){.open-dot{animation:none}}
 .open-main{flex:1; min-width:0; display:flex; flex-direction:column}
 .open-main span{font-size:13px; color:var(--mute)}
-.open-go{font-weight:600; font-size:15px}
+.open-go{font-weight:600; font-size:14px; background:var(--fg); color:var(--bg); border-radius:999px; padding:9px 14px}
 .secondary{width:100%; margin-top:8px; border:1px solid var(--line); background:transparent; border-radius:14px; padding:15px; font-size:16px; font-weight:500}
 .opt{color:var(--mute); font-weight:400}
 .chips{margin:-6px 0 18px}
@@ -170,13 +194,14 @@ h2 small{font-weight:400; color:var(--mute); font-size:13px}
 .small-dlg h3{margin:0 0 10px; font-size:21px; font-weight:600; letter-spacing:-0.02em}
 .small-dlg p{margin:0 0 8px; color:var(--mute); font-size:15px}
 .small-dlg p b{color:var(--fg); font-weight:500}
-.fab{position:fixed; left:50%; transform:translateX(-50%); bottom:0; margin-bottom:calc(20px + env(safe-area-inset-bottom,0px));
-  border:0; background:var(--fg); color:var(--bg); border-radius:999px; padding:16px 26px; font-weight:600; font-size:16px;
-  display:flex; gap:10px; align-items:center; white-space:nowrap; box-shadow:0 0 0 6px var(--bg)}
+.fab{position:fixed; left:50%; transform:translateX(-50%); bottom:0; margin-bottom:calc(18px + env(safe-area-inset-bottom,0px));
+  width:calc(100% - 36px); max-width:484px; justify-content:center; z-index:30;
+  border:0; background:var(--fg); color:var(--bg); border-radius:18px; padding:17px 26px; font-weight:600; font-size:16px;
+  display:flex; gap:10px; align-items:center; white-space:nowrap; box-shadow:0 8px 24px rgba(40,30,20,.18)}
 .fab svg{width:18px; height:18px}
 
 /* Sheet */
-dialog{border:0; padding:0; margin:auto auto 0; width:100%; max-width:560px; max-height:92vh; max-height:92dvh; background:var(--bg); color:var(--fg);
+dialog{border:0; padding:0; margin:auto auto 0; width:100%; max-width:560px; max-height:92vh; max-height:92dvh; background:var(--card); color:var(--fg);
   border-radius:22px 22px 0 0; overflow:auto}
 dialog::backdrop{background:rgba(0,0,0,.45)}
 dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
@@ -197,7 +222,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 .field{display:block}
 .field.full{grid-column:1/-1}
 .field span{display:block; font-size:13px; color:var(--mute); margin-bottom:6px}
-.field input{width:100%; border:1px solid var(--line); background:var(--bg); border-radius:12px; padding:13px 14px; font-size:17px; appearance:none; -webkit-appearance:none; min-height:50px}
+.field input{width:100%; border:1px solid var(--line); background:var(--card); border-radius:12px; padding:13px 14px; font-size:17px; appearance:none; -webkit-appearance:none; min-height:50px}
 .field input:focus{border-color:var(--fg); outline:none}
 .field input::placeholder{color:var(--mute); opacity:.7}
 .field.bad input{border-color:var(--fg); border-width:2px}
@@ -220,7 +245,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
 <body>
 <div class="wrap">
   <header>
-    <div class="brand"><span class="car" id="carName"></span> <span>Ladelog</span></div>
+    <div class="brand"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><span><span class="car" id="carName"></span> <span>Ladelog</span></span></div>
     <button class="icon-btn" id="btnSettings" aria-label="Einstellungen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
     </button>
@@ -239,26 +264,40 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     <button data-p="30d" aria-pressed="false">30 Tage</button>
   </div>
 
-  <div class="hero">
-    <div class="hero-num" id="heroNum">–</div>
-    <div class="hero-cap" id="heroCap">Euro pro 100 km</div>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><div class="stat-v" id="sPaid">–</div><div class="stat-l">kWh/100 km inkl. Ladeverlust</div></div>
-    <div class="stat"><div class="stat-v" id="sBatt">–</div><div class="stat-l">kWh/100 km ab Akku</div></div>
-    <div class="stat"><div class="stat-v" id="sCost">–</div><div class="stat-l">Kosten gesamt</div></div>
+  <div class="tiles2">
+    <div class="tile">
+      <div class="tile-l">Pro 100 km</div>
+      <div class="tile-v" id="heroNum">–</div>
+      <div class="tile-s" id="heroCap"></div>
+    </div>
+    <div class="tile accent">
+      <div class="tile-l" id="saveTileL">Gespart</div>
+      <div class="tile-v" id="saveTileV">–</div>
+      <div class="tile-s" id="saveTileS"></div>
+    </div>
   </div>
 
   <section>
-    <h2 id="saveTitle">Ersparnis gegenüber Verbrenner</h2>
+    <h2><span id="saveTitle">Strom gegen Verbrenner</span> <small id="saveSub"></small></h2>
     <div id="saveBody"></div>
+  </section>
+
+  <div class="tiles3">
+    <div class="tile"><div class="tile-l">inkl. Ladeverlust</div><div class="tile-v" id="sPaid">–</div><div class="tile-s">kWh/100 km</div></div>
+    <div class="tile"><div class="tile-l">ab Akku</div><div class="tile-v" id="sBatt">–</div><div class="tile-s">kWh/100 km</div></div>
+    <div class="tile"><div class="tile-l">Kosten gesamt</div><div class="tile-v" id="sCost">–</div><div class="tile-s" id="sCostSub">im Zeitraum</div></div>
+  </div>
+
+  <section>
+    <h2>Wo du lädst <small id="mixAvg"></small></h2>
+    <div id="mixBody"></div>
   </section>
 
   <section>
     <h2>Kosten pro Monat <small id="chartSum"></small></h2>
     <div class="chart" id="chart"></div>
-    <div class="legend"><span><i style="background:var(--fg)"></i>Zuhause</span><span><i style="background:var(--bar2)"></i>Unterwegs</span></div>
+    <div class="bar-detail" id="chartDetail" aria-live="polite">Tipp auf einen Balken für Details.</div>
+    <div class="legend"><span><i class="sw-home"></i>Zuhause</span><span><i class="sw-ac"></i>AC</span><span><i class="sw-dc"></i>DC</span></div>
   </section>
 
   <section>
@@ -272,12 +311,8 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     <div class="chart" id="kmChart"></div>
   </section>
 
-  <section>
-    <h2>Wo du lädst <small id="mixAvg"></small></h2>
-    <div id="mixBody"></div>
-  </section>
 
-  <section>
+  <section class="plain">
     <h2>Ladungen <small id="count"></small></h2>
     <ul class="list" id="list"></ul>
     <p class="note" id="listNote"></p>
@@ -576,15 +611,16 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     $("carName").textContent = state.settings.car || "";
     document.title = state.settings.car ? state.settings.car + " Ladelog" : "Ladelog";
     const hero = $("heroNum");
-    if (r.per100 != null) { hero.textContent = f2.format(r.per100); hero.classList.remove("empty"); }
-    else { hero.textContent = "0,00"; hero.classList.add("empty"); }
+    if (r.per100 != null) { hero.textContent = f2.format(r.per100) + " €"; hero.classList.remove("empty"); }
+    else { hero.textContent = "0,00 €"; hero.classList.add("empty"); }
     $("heroCap").innerHTML = r.per100 != null
-      ? `Euro pro 100 km, über <b>${f0.format(r.km)} km</b>`
-      : r.nClosed < 2 ? "Euro pro 100 km. Ab der zweiten Ladung wird gerechnet." : "Euro pro 100 km. Noch keine auswertbare Strecke in diesem Zeitraum.";
+      ? `über <b>${f0.format(r.km)} km</b>`
+      : r.nClosed < 2 ? "Ab der zweiten Ladung wird gerechnet." : "Noch keine Strecke in diesem Zeitraum.";
 
     $("sPaid").textContent = r.paidCons != null ? f1.format(r.paidCons) : "–";
     $("sBatt").textContent = r.battCons != null ? f1.format(r.battCons) : "–";
     $("sCost").textContent = r.nInPeriod ? f0.format(r.cost) + " €" : "–";
+    $("sCostSub").textContent = r.nInPeriod ? `${r.nInPeriod} ${r.nInPeriod === 1 ? "Ladung" : "Ladungen"}` : "im Zeitraum";
     renderMix(r.byType);
 
     const open = state.charges.find((c) => c.open);
@@ -616,8 +652,21 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     const body = $("mixBody");
     if (!totN) { body.innerHTML = `<div class="save-empty">Sobald du Ladungen erfasst hast, siehst du hier, wie viel du zuhause, an AC-Säulen und am Schnelllader lädst und was es jeweils kostet.</div>`; return; }
 
-    let html = `<div class="mixbar" role="img" aria-label="Anteil der geladenen Energie">` +
-      types.filter(([t]) => bt[t].kwh > 0).map(([t]) => `<i class="sw-${t}" style="flex:${bt[t].kwh}"></i>`).join("") + `</div>`;
+    const C = 2 * Math.PI * 44;
+    let off = 0, rings = "";
+    const label = [];
+    for (const [t, name] of types) {
+      const g = bt[t];
+      if (!(g.kwh > 0)) continue;
+      const len = g.kwh / totKwh * C;
+      rings += `<circle cx="60" cy="60" r="44" fill="none" stroke="var(--${t})" stroke-width="18" stroke-dasharray="${len.toFixed(2)} ${C.toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 60 60)"/>`;
+      off += len;
+      label.push(`${name} ${Math.round(g.kwh / totKwh * 100)} %`);
+    }
+    let html = `<div class="mix-top"><svg class="donut" viewBox="0 0 120 120" role="img" aria-label="Anteil der geladenen Energie: ${label.join(", ")}">
+      <circle cx="60" cy="60" r="44" fill="none" stroke="var(--soft)" stroke-width="18"/>${rings}
+      <text x="60" y="59" text-anchor="middle" font-size="19" font-weight="600" fill="var(--fg)" font-family="inherit">${f0.format(totKwh)}</text>
+      <text x="60" y="75" text-anchor="middle" font-size="10" fill="var(--mute)" font-family="inherit">kWh</text></svg><div class="mix-rows">`;
     for (const [t, name] of types) {
       const g = bt[t];
       if (!g.n) continue;
@@ -625,15 +674,16 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       const pk = g.kc > 0 ? g.cost / g.kc : null;
       html += `<div class="mixrow">
         <span class="sw sw-${t}"></span>
-        <div><div class="mix-n">${name}</div><div class="mix-s">${g.n} ${g.n === 1 ? "Ladung" : "Ladungen"}, ${f0.format(g.kwh)} kWh, ${share} %</div></div>
-        <div class="mix-p">${pk != null ? f2.format(pk) + " €" : "–"}<small>${f0.format(g.cost)} € gesamt</small></div>
+        <div><div class="mix-n">${name.replace(" unterwegs", "").replace(" Schnellladen", "")}</div><div class="mix-s">${g.n}× · ${share} % · ${f0.format(g.cost)} €</div></div>
+        <div class="mix-p">${pk != null ? f2.format(pk) + " €" : "–"}</div>
       </div>`;
     }
+    html += `</div></div>`;
     // Was unterwegs laden gekostet hat, verglichen mit Laden zuhause
     const home = bt.home.kc > 0 ? bt.home.cost / bt.home.kc : state.settings.homePrice;
     const awayKc = bt.ac.kc + bt.dc.kc, awayCost = bt.ac.cost + bt.dc.cost;
     const extra = home > 0 && awayKc > 0 ? awayCost - awayKc * home : 0;
-    if (extra > 1) html += `<p class="mix-note">Unterwegs laden hat dich <b>${f0.format(extra)} € mehr</b> gekostet, als wenn du dieselbe Menge zuhause geladen hättest.</p>`;
+    if (extra > 1) html += `<div class="tip">Unterwegs laden hat dich <b>${f0.format(extra)} € mehr</b> gekostet, als wenn du dieselbe Menge zuhause geladen hättest.</div>`;
     const avgKwh = totN ? totKwh / totN : 0;
     if (avgKwh > 0) html += `<p class="mix-note">Im Schnitt lädst du <b>${f1.format(avgKwh)} kWh</b> pro Ladung für <b>${f2.format(totCost / totN)} €</b>.</p>`;
     body.innerHTML = html;
@@ -644,26 +694,40 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     const s = state.settings;
     const fuelName = s.fuel === "diesel" ? "Diesel" : "Benzin";
     const live = s.plz && s.fuelLast && s.fuelLast.type === s.fuel ? s.fuelLast : null;
-    $("saveTitle").textContent = sv.on ? `Ersparnis gegenüber ${fuelName}` : "Ersparnis gegenüber Verbrenner";
+    const tv = $("saveTileV"), ts = $("saveTileS");
+    $("saveTitle").textContent = sv.on ? `Strom gegen ${fuelName}` : "Strom gegen Verbrenner";
+    $("saveSub").textContent = sv.on && sv.km > 0 ? `für ${f0.format(sv.km)} km` : "";
     const body = $("saveBody");
     if (!sv.on) {
-      body.innerHTML = `<div class="save-empty">Trag in den Einstellungen Verbrauch und Literpreis eines Verbrenners ein, zum Beispiel von deinem vorherigen Auto. Dann siehst du hier, was du sparst.<br><button type="button" id="btnSaveSetup">Vergleich einrichten</button></div>`;
-      $("btnSaveSetup").addEventListener("click", openSettings);
+      tv.textContent = "–"; tv.classList.add("empty");
+      ts.innerHTML = `Noch kein Vergleich eingerichtet.<br><button type="button" id="btnSaveTile">Einrichten</button>`;
+      $("btnSaveTile").addEventListener("click", openSettings);
+      body.innerHTML = `<div class="tip">Trag in den Einstellungen Verbrauch und Spritsorte eines Verbrenners ein, zum Beispiel von deinem vorherigen Auto. Dann siehst du hier, was du sparst.</div>`;
       return;
     }
     if (sv.km <= 0) {
-      body.innerHTML = `<div class="save-empty">Ab der zweiten Ladung mit Preisangabe wird hier gerechnet.</div>`;
+      tv.textContent = "0 €"; tv.classList.add("empty");
+      ts.textContent = "Ab der zweiten Ladung";
+      body.innerHTML = `<div class="tip">Ab der zweiten Ladung mit Preisangabe wird hier gerechnet.</div>`;
       return;
     }
     const sign = sv.diff >= 0 ? "+" : "−";
+    tv.textContent = `${sign}${f0.format(Math.abs(sv.diff))} €`; tv.classList.remove("empty");
+    const lp = sv.km > 0 && sv.fuel > 0 && s.fuelL > 0 ? sv.fuel / (sv.km / 100 * s.fuelL) : null;
+    ts.textContent = sv.diff > 0 && lp ? `≈ ${f0.format(sv.diff / lp)} Liter ${fuelName}` : `gegenüber ${fuelName}`;
+
+    const max = Math.max(sv.ev, sv.fuel, 1);
     body.innerHTML = `
-      <div class="save-num${sv.diff < 0 ? " neg" : ""}">${sign}${f0.format(Math.abs(sv.diff))} €</div>
-      <div class="save-cap">${fuelName} hätte für <b>${f0.format(sv.km)} km</b> etwa <b>${f0.format(sv.fuel)} €</b> gekostet, Strom <b>${f0.format(sv.ev)} €</b>.${live ? ` Aktuell kostet ${fuelName} rund um ${escapeHtml(live.place || live.plz)} im Schnitt <b>${f2.format(live.price)} €</b> pro Liter.` : ""}</div>
+      <div class="vs">
+        <div><div class="vs-row"><span>Strom</span><b>${f0.format(sv.ev)} €</b></div><div class="vs-track"><i style="width:${(sv.ev / max * 100).toFixed(1)}%; background:var(--ac)"></i></div></div>
+        <div><div class="vs-row"><span>${fuelName} (${f1.format(s.fuelL)} l/100 km)</span><b>${f0.format(sv.fuel)} €</b></div><div class="vs-track"><i style="width:${(sv.fuel / max * 100).toFixed(1)}%; background:var(--bar2)"></i></div></div>
+      </div>
+      ${live ? `<div class="save-cap">Aktuell kostet ${fuelName} rund um ${escapeHtml(live.place || live.plz)} im Schnitt <b>${f2.format(live.price)} €</b> pro Liter.</div>` : ""}
       <div class="save-chart" id="saveChart"></div>`;
 
     const pts = sv.series;
     if (pts.length < 3) return;
-    const W = 480, H = 150, padT = 22, padB = 24;
+    const W = 480, H = 130, padT = 22, padB = 24;
     const t0 = new Date(pts[0].t).getTime(), t1 = new Date(pts[pts.length - 1].t).getTime();
     const span = Math.max(1, t1 - t0);
     const vals = pts.map((p) => p.v);
@@ -677,10 +741,10 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     const lab = (d) => MONTHS[d.getMonth()] + " " + String(d.getFullYear()).slice(2);
     let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ersparnis im Zeitverlauf">`;
     svg += `<line x1="0" x2="${W}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" stroke-width="1"/>`;
-    svg += `<polygon points="${X(pts[0].t)},${Y(0)} ${line} ${X(last.t)},${Y(0)}" fill="var(--soft)"/>`;
-    svg += `<polyline points="${line}" fill="none" stroke="var(--fg)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
-    svg += `<circle cx="${X(last.t)}" cy="${Y(last.v)}" r="4" fill="var(--fg)"/>`;
-    svg += `<text x="${Math.min(X(last.t), W - 4)}" y="${Math.max(12, Y(last.v) - 10)}" text-anchor="end" font-size="12" fill="var(--fg)" font-family="inherit">${last.v >= 0 ? "+" : "−"}${f0.format(Math.abs(last.v))} € gesamt</text>`;
+    svg += `<polygon points="${X(pts[0].t)},${Y(0)} ${line} ${X(last.t)},${Y(0)}" fill="var(--tip)"/>`;
+    svg += `<polyline points="${line}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+    svg += `<circle cx="${X(last.t)}" cy="${Y(last.v)}" r="4.5" fill="var(--accent)" stroke="var(--card)" stroke-width="2"/>`;
+    svg += `<text x="${Math.min(X(last.t), W - 4)}" y="${Math.max(12, Y(last.v) - 10)}" text-anchor="end" font-size="12" fill="var(--fg)" font-family="inherit">Ersparnis ${last.v >= 0 ? "+" : "−"}${f0.format(Math.abs(last.v))} €</text>`;
     svg += `<text x="4" y="${H - 4}" font-size="12" fill="var(--mute)" font-family="inherit">${lab(d0)}</text>`;
     svg += `<text x="${W - 4}" y="${H - 4}" text-anchor="end" font-size="12" fill="var(--mute)" font-family="inherit">${lab(d1)}</text>`;
     $("saveChart").innerHTML = svg + "</svg>";
@@ -699,7 +763,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     months.forEach((m, i) => {
       const x = i * (bw + gap), v = m[key], last = i === lastIdx;
       if (v != null && v > 0) {
-        svg += `<rect x="${x}" y="${Y(v)}" width="${bw}" height="${base - Y(v)}" rx="3" fill="${last ? "var(--fg)" : "var(--bar2)"}"/>`;
+        svg += `<rect x="${x}" y="${Y(v)}" width="${bw}" height="${base - Y(v)}" rx="4" fill="${last ? "var(--accent)" : "var(--bar2)"}"/>`;
         svg += `<text x="${x + bw / 2}" y="${Y(v) - 6}" text-anchor="middle" font-size="11" fill="${last ? "var(--fg)" : "var(--mute)"}" font-family="inherit">${fmtV(v)}</text>`;
       }
       svg += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="11" fill="${last ? "var(--fg)" : "var(--mute)"}" font-family="inherit">${m.label}</text>`;
@@ -751,30 +815,56 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     const months = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      months.push({ key: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"), label: MONTHS[d.getMonth()], home: 0, away: 0 });
+      months.push({ key: d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"), label: MONTHS[d.getMonth()], home: 0, ac: 0, dc: 0 });
     }
     for (const c of state.charges) {
       if (c.open) continue;
       const m = months.find((x) => x.key === c.ts.slice(0, 7));
       if (!m) continue;
       const cost = derive(c, s).cost || 0;
-      if (c.type === "home") m.home += cost; else m.away += cost;
+      m[c.type === "ac" || c.type === "dc" ? c.type : "home"] += cost;
     }
-    const max = Math.max(1, ...months.map((m) => m.home + m.away));
+    months.forEach((m) => (m.tot = m.home + m.ac + m.dc));
+    const max = Math.max(1, ...months.map((m) => m.tot));
     const W = 480, H = 170, base = 140, top = 18, bw = 44, gap = (W - bw * 6) / 5;
     let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Kosten der letzten sechs Monate">`;
     svg += `<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--line)" stroke-width="1"/>`;
     months.forEach((m, i) => {
       const x = i * (bw + gap);
-      const hh = (m.home / max) * (base - top), ha = (m.away / max) * (base - top);
-      const tot = m.home + m.away;
-      if (ha > 0) svg += `<rect x="${x}" y="${base - hh - ha}" width="${bw}" height="${ha}" rx="3" fill="var(--bar2)"/>`;
-      if (hh > 0) svg += `<rect x="${x}" y="${base - hh}" width="${bw}" height="${hh}" rx="3" fill="var(--fg)"/>`;
-      if (tot > 0) svg += `<text x="${x + bw / 2}" y="${base - hh - ha - 6}" text-anchor="middle" font-size="12" fill="var(--mute)" font-family="inherit">${f0.format(tot)}</text>`;
-      svg += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="13" fill="${i === 5 ? "var(--fg)" : "var(--mute)"}" font-family="inherit">${m.label}</text>`;
+      svg += `<g class="mcol" data-i="${i}" role="button" tabindex="0" aria-label="${m.label}: ${eur(m.tot)}"><rect x="${x - gap / 2}" y="0" width="${bw + gap}" height="${H}" fill="transparent"/>`;
+      let y = base;
+      for (const t of ["home", "ac", "dc"]) {
+        const h = (m[t] / max) * (base - top);
+        if (h <= 0) continue;
+        y -= h;
+        svg += `<rect x="${x}" y="${y.toFixed(1)}" width="${bw}" height="${Math.max(h - 1.5, 1).toFixed(1)}" rx="5" fill="var(--${t})"/>`;
+      }
+      const tot = m.tot;
+      if (tot > 0) svg += `<text x="${x + bw / 2}" y="${(y - 6).toFixed(1)}" text-anchor="middle" font-size="12" fill="var(--mute)" font-family="inherit">${f0.format(tot)}</text>`;
+      svg += `<text x="${x + bw / 2}" y="${H - 6}" text-anchor="middle" font-size="13" fill="${i === 5 ? "var(--fg)" : "var(--mute)"}" font-family="inherit">${m.label}</text></g>`;
     });
-    $("chart").innerHTML = svg + "</svg>";
-    const sum = months.reduce((a, m) => a + m.home + m.away, 0);
+    const chartEl = $("chart");
+    chartEl.innerHTML = svg + "</svg>";
+    chartEl.classList.remove("sel");
+    const detail = $("chartDetail");
+    detail.textContent = "Tipp auf einen Balken für Details.";
+    const pick = (g) => {
+      const i = +g.dataset.i, m = months[i];
+      const was = g.classList.contains("on");
+      chartEl.querySelectorAll(".mcol").forEach((x) => x.classList.remove("on"));
+      if (was) { chartEl.classList.remove("sel"); detail.textContent = "Tipp auf einen Balken für Details."; return; }
+      g.classList.add("on"); chartEl.classList.add("sel");
+      const d = new Date(m.key + "-01T12:00");
+      const name = MONTHS_LONG[d.getMonth()] + " " + d.getFullYear();
+      if (!m.tot) { detail.innerHTML = `<b>${name}</b><span>keine Ladungskosten</span>`; return; }
+      const part = (t, l) => m[t] > 0 ? `<span class="bd-t"><i class="sw-${t}"></i>${l} ${eur(m[t])}</span>` : "";
+      detail.innerHTML = `<b>${name}: ${eur(m.tot)}</b>${part("home", "Zuhause")}${part("ac", "AC")}${part("dc", "DC")}`;
+    };
+    chartEl.querySelectorAll(".mcol").forEach((g) => {
+      g.addEventListener("click", () => pick(g));
+      g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(g); } });
+    });
+    const sum = months.reduce((a, m) => a + m.tot, 0);
     $("chartSum").textContent = sum > 0 ? eur(sum) + " in 6 Monaten" : "";
   }
 
@@ -798,6 +888,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       const kwhTxt = d.paid == null ? "" : (d.estimated ? "<i>" : "") + f1.format(d.paid) + " kWh" + (d.estimated ? "</i>" : "");
       const socTxt = c.soc0 != null && c.soc1 != null ? `${f0.format(c.soc0)} → ${f0.format(c.soc1)} %` : c.soc1 != null ? `bis ${f0.format(c.soc1)} %` : "";
       b.innerHTML = `
+        <span class="strip sw-${c.type === "ac" || c.type === "dc" ? c.type : "home"}" aria-hidden="true"></span>
         <div class="date"><b>${dt.getDate()}</b><span>${MONTHS[dt.getMonth()]}</span></div>
         <div class="row-main">
           <div class="row-t"></div>
@@ -1078,18 +1169,37 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     const s = state.settings, el = $("fuelStatus");
     if (msg) { el.textContent = msg; return; }
     const L = s.fuelLast;
-    if (s.plz && L && L.type === s.fuel) {
+    const next = fuelNextAllowed(s);
+    const wait = s.plz && Date.now() < next;
+    $("btnFuelNow").disabled = wait;
+    $("btnFuelNow").textContent = wait ? `Nächster Abruf ab ${hhmm(next)} Uhr` : "Spritpreis jetzt abrufen";
+    if (s.plz && L && L.type === s.fuel && L.plz === s.plz) {
       const t = new Date(L.time);
-      el.textContent = `Zuletzt ${f2.format(L.price)} € im Schnitt an ${L.stations} Tankstellen rund um ${L.place || L.plz}, Stand ${t.toLocaleDateString("de-DE")} ${t.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })}. Preise: Tankerkönig (MTS-K), CC BY 4.0.`;
+      el.textContent = `Zuletzt ${f2.format(L.price)} € im Schnitt an ${L.stations} Tankstellen rund um ${L.place || L.plz}, Stand ${t.toLocaleDateString("de-DE")} ${hhmm(t.getTime())} Uhr. Preise: Tankerkönig (MTS-K), CC BY 4.0.`;
     } else {
       el.textContent = "";
     }
   }
+  // Höchstens ein Abruf alle 6 Stunden (gleiche PLZ und Sorte), nach Fehlern 1 Stunde Pause
+  const FUEL_COOLDOWN = 6 * 3600e3, FUEL_RETRY = 3600e3;
+  const hhmm = (ms) => new Date(ms).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+  function fuelNextAllowed(s) {
+    const L = s.fuelLast;
+    let next = 0;
+    if (L && L.type === s.fuel && L.plz === s.plz) next = (L.fetched || new Date(L.time).getTime()) + FUEL_COOLDOWN;
+    if (s.fuelTry && s.fuelTry.plz === s.plz && s.fuelTry.type === s.fuel) next = Math.max(next, s.fuelTry.at + FUEL_RETRY);
+    return next;
+  }
   async function refreshFuel(force) {
     const s = state.settings;
     if (!s.plz) throw new Error("Trag zuerst eine Postleitzahl ein.");
-    const L = s.fuelLast;
-    if (!force && L && L.type === s.fuel && L.plz === s.plz && Date.now() - new Date(L.time).getTime() < 12 * 3600e3) return;
+    const next = fuelNextAllowed(s);
+    if (Date.now() < next) {
+      if (force) throw new Error(`Die Preise sind aktuell. Nächster Abruf ab ${hhmm(next)} Uhr möglich.`);
+      return;
+    }
+    state.settings = { ...s, fuelTry: { at: Date.now(), plz: s.plz, type: s.fuel } };
+    local.saveSet(state.settings);
     const res = await fetch(`api/sprit?plz=${encodeURIComponent(s.plz)}&type=${API_TYPE[s.fuel] || "e5"}`);
     let data = null; try { data = await res.json(); } catch {}
     if (!res.ok || !data || typeof data.price !== "number") throw new Error((data && data.error) || "Spritpreis konnte nicht abgerufen werden.");
@@ -1099,7 +1209,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     const m = h[k] || { sum: 0, n: 0 };
     h[k] = { sum: m.sum + data.price, n: m.n + 1 };
     hist[s.fuel] = h;
-    state.settings = { ...s, fuelHist: hist, fuelLast: { price: data.price, time: data.time, place: data.place, stations: data.stations, type: s.fuel, plz: s.plz } };
+    state.settings = { ...state.settings, fuelHist: hist, fuelTry: null, fuelLast: { price: data.price, time: data.time, fetched: Date.now(), place: data.place, stations: data.stations, type: s.fuel, plz: s.plz } };
     local.saveSet(state.settings);
     render();
     if (dlgS.open) showFuelStatus();
@@ -1111,8 +1221,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     state.settings = { ...state.settings, plz, fuel };
     local.saveSet(state.settings);
     const b = $("btnFuelNow"); b.disabled = true; showFuelStatus("Frage Preise ab …");
-    try { await refreshFuel(true); } catch (e) { showFuelStatus(e.message); }
-    finally { b.disabled = false; }
+    try { await refreshFuel(true); showFuelStatus(); } catch (e) { showFuelStatus(); showFuelStatus(e.message); }
   });
 
   document.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", () => b.closest("dialog").close()));
