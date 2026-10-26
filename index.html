@@ -271,7 +271,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       <div class="tile-s" id="heroCap"></div>
     </div>
     <div class="tile accent">
-      <div class="tile-l" id="saveTileL">Gespart</div>
+      <div class="tile-l" id="saveTileL">Bisher gespart</div>
       <div class="tile-v" id="saveTileV">–</div>
       <div class="tile-s" id="saveTileS"></div>
     </div>
@@ -614,7 +614,9 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     if (r.per100 != null) { hero.textContent = f2.format(r.per100) + " €"; hero.classList.remove("empty"); }
     else { hero.textContent = "0,00 €"; hero.classList.add("empty"); }
     $("heroCap").innerHTML = r.per100 != null
-      ? `über <b>${f0.format(r.km)} km</b>`
+      ? (state.period === "all"
+          ? `Schnitt aller <b>${f0.format(r.km)} km</b> bisher`
+          : `Schnitt aus <b>${f0.format(r.km)} km</b>, letzte ${state.period === "30d" ? "30 Tage" : "12 Monate"}`)
       : r.nClosed < 2 ? "Ab der zweiten Ladung wird gerechnet." : "Noch keine Strecke in diesem Zeitraum.";
 
     $("sPaid").textContent = r.paidCons != null ? f1.format(r.paidCons) : "–";
@@ -711,6 +713,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       body.innerHTML = `<div class="tip">Ab der zweiten Ladung mit Preisangabe wird hier gerechnet.</div>`;
       return;
     }
+    $("saveTileL").textContent = state.period === "all" ? "Bisher gespart" : `Gespart, letzte ${state.period === "30d" ? "30 Tage" : "12 Monate"}`;
     const sign = sv.diff >= 0 ? "+" : "−";
     tv.textContent = `${sign}${f0.format(Math.abs(sv.diff))} €`; tv.classList.remove("empty");
     const lp = sv.km > 0 && sv.fuel > 0 && s.fuelL > 0 ? sv.fuel / (sv.km / 100 * s.fuelL) : null;
@@ -720,7 +723,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     body.innerHTML = `
       <div class="vs">
         <div><div class="vs-row"><span>Strom</span><b>${f0.format(sv.ev)} €</b></div><div class="vs-track"><i style="width:${(sv.ev / max * 100).toFixed(1)}%; background:var(--ac)"></i></div></div>
-        <div><div class="vs-row"><span>${fuelName} (${f1.format(s.fuelL)} l/100 km)</span><b>${f0.format(sv.fuel)} €</b></div><div class="vs-track"><i style="width:${(sv.fuel / max * 100).toFixed(1)}%; background:var(--bar2)"></i></div></div>
+        <div><div class="vs-row"><span>${fuelName} (${f1.format(s.fuelL)} l/100 km) hätte gekostet</span><b>${f0.format(sv.fuel)} €</b></div><div class="vs-track"><i style="width:${(sv.fuel / max * 100).toFixed(1)}%; background:var(--bar2)"></i></div></div>
       </div>
       ${live ? `<div class="save-cap">Aktuell kostet ${fuelName} rund um ${escapeHtml(live.place || live.plz)} im Schnitt <b>${f2.format(live.price)} €</b> pro Liter.</div>` : ""}
       <div class="save-chart" id="saveChart"></div>`;
