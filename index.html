@@ -396,7 +396,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
       <label class="field"><span>Preis (€/Liter)</span><input id="sFuelP" inputmode="decimal" placeholder="z. B. 1,75" autocomplete="off"></label>
       <div class="hint" style="grid-column:1/-1; margin-top:-4px">Verbrauch zum Beispiel vom vorherigen Auto. Leer lassen, um den Vergleich auszublenden.</div>
       <label class="field full"><span>Postleitzahl für automatische Spritpreise (optional)</span><input id="sPlz" inputmode="numeric" maxlength="5" placeholder="z. B. 01067" autocomplete="postal-code">
-        <div class="hint">Mit Postleitzahl holt die App die aktuellen Spritpreise automatisch: bei jedem Start, höchstens alle 12 Stunden. Genommen wird der Durchschnitt der Tankstellen in deiner Umgebung. Den Literpreis oben musst du dann nicht mehr pflegen.</div>
+        <div class="hint">Mit Postleitzahl holt die App die aktuellen Spritpreise automatisch: bei jedem Start, höchstens alle 12 Stunden. Genommen wird der Durchschnitt der Tankstellen in deiner Umgebung. Dafür das Feld „Preis (€/Liter)“ oben leer lassen. Ein dort eingetragener Preis hat immer Vorrang.</div>
         <div class="hint" id="fuelStatus" style="color:var(--fg)"></div></label>
     </div>
     <button type="button" class="link" id="btnFuelNow">Spritpreis jetzt abrufen</button>
@@ -511,9 +511,9 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     if (!ks.length) return null; const m = h[ks[ks.length - 1]]; return m.n ? m.sum / m.n : null;
   }
   function fuelPriceFor(ts, s) {
+    if (s.fuelPrice > 0) return s.fuelPrice;   // manueller Preis hat Vorrang
     const m = histOf(s)[ts.slice(0, 7)];
     if (m && m.n) return m.sum / m.n;
-    if (s.fuelPrice > 0) return s.fuelPrice;
     return latestFetched(s);
   }
   const sortAsc = (a, b) => (a.ts < b.ts ? -1 : a.ts > b.ts ? 1 : a.odo - b.odo);
@@ -711,7 +711,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   function renderSavings(sv) {
     const s = state.settings;
     const fuelName = s.fuel === "diesel" ? "Diesel" : "Benzin";
-    const live = s.plz && s.fuelLast && s.fuelLast.type === s.fuel ? s.fuelLast : null;
+    const live = !(s.fuelPrice > 0) && s.plz && s.fuelLast && s.fuelLast.type === s.fuel ? s.fuelLast : null;
     const tv = $("saveTileV"), ts = $("saveTileS");
     $("saveTitle").textContent = sv.on ? `Strom gegen ${fuelName}` : "Strom gegen Verbrenner";
     $("saveSub").textContent = sv.on && sv.km > 0 ? `für ${f0.format(sv.km)} km` : "";
