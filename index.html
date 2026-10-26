@@ -741,6 +741,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
         <div><div class="vs-row"><span>Strom</span><b>${f0.format(sv.ev)} €</b></div><div class="vs-track"><i style="width:${(sv.ev / max * 100).toFixed(1)}%; background:var(--ac)"></i></div></div>
         <div><div class="vs-row"><span>${fuelName} (${f1.format(s.fuelL)} l/100 km) hätte gekostet</span><b>${f0.format(sv.fuel)} €</b></div><div class="vs-track"><i style="width:${(sv.fuel / max * 100).toFixed(1)}%; background:var(--bar2)"></i></div></div>
       </div>
+      ${sv.km > 0 && s.fuelL > 0 ? `<div class="save-cap">Gleich teuer wäre ${fuelName} erst bei <b>${f2.format(sv.ev / (sv.km / 100 * s.fuelL))} €</b> pro Liter.</div>` : ""}
       ${live ? `<div class="save-cap">Aktuell kostet ${fuelName} rund um ${escapeHtml(live.place || live.plz)} im Schnitt <b>${f2.format(live.price)} €</b> pro Liter.</div>` : ""}
       <div class="save-chart" id="saveChart"></div>`;
 
