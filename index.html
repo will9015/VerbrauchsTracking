@@ -711,7 +711,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
   function renderSavings(sv) {
     const s = state.settings;
     const fuelName = s.fuel === "diesel" ? "Diesel" : "Benzin";
-    const live = !(s.fuelPrice > 0) && s.plz && s.fuelLast && s.fuelLast.type === s.fuel ? s.fuelLast : null;
+    const live = s.plz && s.fuelLast && s.fuelLast.type === s.fuel ? s.fuelLast : null;
     const tv = $("saveTileV"), ts = $("saveTileS");
     $("saveTitle").textContent = sv.on ? `Strom gegen ${fuelName}` : "Strom gegen Verbrenner";
     $("saveSub").textContent = sv.on && sv.km > 0 ? `für ${f0.format(sv.km)} km` : "";
