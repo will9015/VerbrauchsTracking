@@ -536,18 +536,34 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
     const priceT = paidCostedT > 0 ? costT / paidCostedT : null;
     const priceOf = (d) => (d.cost != null && d.paid > 0 ? d.cost / d.paid : priceT);
 
+    // Mischpreis des Akkuinhalts: Jede Ladung mischt ihren Preis anteilig
+    // zum Akkustand ein. Gefahrene Strecke wird mit diesem Mischpreis bewertet,
+    // auch wenn kurz hintereinander zu verschiedenen Preisen geladen wurde.
+    const mixAfter = [];
+    let mix = null;
+    all.forEach((c, i) => {
+      const pc = priceOf(ds[i]);
+      if (pc != null) {
+        if (mix == null || c.soc0 == null || c.soc1 == null || c.soc1 <= 0) mix = pc;
+        else if (c.soc1 > c.soc0) mix = (c.soc0 * mix + (c.soc1 - c.soc0) * pc) / c.soc1;
+      }
+      mixAfter.push(mix);
+    });
+
     // Strecken zwischen zwei Ladungen
     const rows = all.map((c, i) => {
       const d = ds[i];
       let seg = null;
       if (i > 0) {
-        const p = all[i - 1], pd = ds[i - 1];
+        const p = all[i - 1];
         const km = c.odo - p.odo;
         if (km > 0) {
           let used = null, energy = null, price = null;
-          if (p.soc1 != null && c.soc0 != null && p.soc1 > c.soc0) {
-            used = (p.soc1 - c.soc0) / 100 * s.cap;   // genau: Akkustände bekannt
-            energy = used * factor; price = priceOf(pd);
+          if (p.soc1 != null && c.soc0 != null) {
+            // genau: Akkustände bekannt. Kein messbarer Rückgang (z. B. nach 2 km
+            // direkt nachgeladen) zählt als 0 kWh statt als Ersatzwert.
+            used = Math.max(0, p.soc1 - c.soc0) / 100 * s.cap;
+            energy = used * factor; price = mixAfter[i - 1];
           } else if (d.paid != null) {
             energy = d.paid; price = priceOf(d);       // Näherung: nachgeladene Menge
           }
@@ -897,7 +913,7 @@ dialog[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
           <div class="row-t"></div>
           <div class="row-s">${[socTxt, kwhTxt].filter(Boolean).join(", ")}</div>
         </div>
-        <div class="row-c">${eur(d.cost)}<small>${seg ? f1.format(seg.cons) + " kWh/100" : ""}</small></div>`;
+        <div class="row-c">${eur(d.cost)}<small>${seg && seg.energy > 0 ? f1.format(seg.cons) + " kWh/100" : ""}</small></div>`;
       b.querySelector(".row-t").textContent = [TYPE_LABEL[c.type], c.provider, c.note].filter(Boolean).join(", ");
       b.addEventListener("click", () => openCharge(c));
       li.appendChild(b); list.appendChild(li);
